@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+registros.jsonl
+dados/
+.pytest_cache/
+
+# Saídas locais e dados da demonstração
+/Rede Aberta.desktop
+*.jsonl
+*.log
+*.bin
+*.pcap
+*.pcapng
+
+# Certificados, chaves e configurações privadas
+*.key
+*.pem
+*.crt
+*.csr
+*.srl
+.env
+.env.*
