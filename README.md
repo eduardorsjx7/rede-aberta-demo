@@ -2,6 +2,8 @@
 
 Este projeto cria um ponto de acesso **sem senha** para uma atividade presencial e oferece uma página educativa em `http://10.42.0.1:8080`. A página só grava dados depois que a pessoa marca a caixa de concordância e envia o formulário: horário, IP, identificação do navegador e apelido opcional. O comando `clientes.sh` mostra os endereços IP e MAC presentes na tabela de vizinhos do sistema; essa consulta não grava arquivo.
 
+Para conduzir a fala, os cliques e a participação do público, consulte o [roteiro de apresentação](ROTEIRO_APRESENTACAO.md).
+
 ## Baixar e iniciar
 
 Em um computador Linux com Python 3 e OpenSSL:
