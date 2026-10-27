@@ -159,6 +159,9 @@ function renderizarTelao() {
   $('conexao-telao').textContent = e.ativo ? 'Sincronizado com o painel da equipe' : 'Dinâmica parada · controle pelo painel da equipe';
   $('modo-telao').textContent = e.modo === 'ensaio' ? 'SIMULAÇÃO · DADOS FICTÍCIOS' : (e.ativo ? 'DEMONSTRAÇÃO AO VIVO' : 'DINÂMICA ENCERRADA');
   $('passo-telao').textContent = `${e.etapa + 1} / ${ETAPAS.length}`;
+  const progresso = $('progresso-telao');
+  if (progresso.children.length !== ETAPAS.length) progresso.replaceChildren(...ETAPAS.map(() => document.createElement('i')));
+  [...progresso.children].forEach((ponto, i) => { ponto.className = i < e.etapa ? 'feito' : (i === e.etapa ? 'atual' : ''); });
   $('titulo-telao').textContent = ETAPAS[e.etapa].titulo;
   if ($('corpo-telao').dataset.etapa !== String(e.etapa)) {
     $('corpo-telao').innerHTML = ETAPAS[e.etapa].corpo;

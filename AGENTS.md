@@ -2,37 +2,39 @@
 
 ## Project Structure & Module Organization
 
-This is a small Linux demonstration of an open Wi-Fi network with a local educational page. All files live at the repository root:
+Local Linux demonstration of an open Wi-Fi network, part of the extension project "Inclusão Digital e Segurança da Informação". Code lives at the repository root; documentation lives in `docs/`.
 
-- `servidor.py`: Python standard-library HTTP server, embedded HTML/CSS, consent validation, and JSON Lines recording.
-- `iniciar.sh`: creates the temporary NetworkManager access point, starts the server, and removes the connection profile on exit.
-- `clientes.sh`: displays the interface's IP/MAC neighbor table without writing records.
-- `README.md`: equipment requirements and presentation instructions in Portuguese.
-- `registros.jsonl`: runtime participant data; treat it as private output.
-
-There are no separate asset, test, or package directories.
+- `app.py`: local control panel server (stdlib HTTP), serves `interface/` and the `/api/*` endpoints.
+- `controle.py`: session state, steps, NetworkManager operations and cleanup.
+- `servidor.py`: participant page (`http://10.42.0.1:8080`), consent validation, JSON Lines recording.
+- `comparacao.py`: HTTP × HTTPS comparison lab (TCP bridges, local TLS certificate).
+- `interface/`: team panel (`index.html`, `app.js`, `estilo.css`), projected screen (`telao.html`, `telao.css`) and step texts (`conteudo.js`, shared by both).
+- `iniciar.sh`, `clientes.sh`, `abrir_app.sh`, `instalar_atalho.py`: command-line helpers and desktop shortcut.
+- `docs/`: `CONTEXTO_PROJETO.md` (link to the deck), `ROTEIRO_APRESENTACAO.md`, `GUIA_SLIDES_DINAMICA.md`.
+- `tests/`: `unittest` suites and `verificar_interface.cjs` (Playwright).
+- `dados/`, `registros.jsonl`: runtime participant data; private, never committed.
 
 ## Build, Test, and Development Commands
 
-No build step or Python package installation is required. The full demonstration needs Linux, NetworkManager (`nmcli`), Python 3, `iproute2`, and an AP-capable Wi-Fi adapter.
+No build step or package installation. The full demonstration needs Linux, NetworkManager (`nmcli`), Python 3, OpenSSL, `iproute2` and an AP-capable Wi-Fi adapter.
 
-- `python3 servidor.py --host 127.0.0.1 --port 8080 --log /tmp/rede-aberta-test.jsonl`: runs locally without changing network settings.
-- `bash iniciar.sh wlan0`: starts the open access point and page at `http://10.42.0.1:8080`; replace `wlan0` with the actual interface. This invokes `sudo` and changes that interface's connection. Stop with `Ctrl+C`.
-- `bash clientes.sh wlan0`: lists observed neighbors.
-- `bash -n iniciar.sh clientes.sh`: checks shell syntax without executing the scripts.
+- `python3 -m unittest discover -s tests -v`: automated tests (simulated network, temporary directories).
+- `bash -n abrir_app.sh iniciar.sh clientes.sh`: shell syntax check.
+- `python3 app.py --sem-navegador`: starts the panel without opening a browser, then `node tests/verificar_interface.cjs` checks the UI (needs Playwright; use an isolated server).
+- `bash iniciar.sh wlan0`: legacy script that starts the open access point; uses `sudo` and changes that interface's connection.
 
 ## Coding Style & Naming Conventions
 
-Follow existing conventions: four-space Python indentation, two-space Bash block indentation, `snake_case` functions and variables, and PascalCase classes. Keep Portuguese user-facing text and descriptive Portuguese identifiers consistent. Retain Bash strict mode (`set -euo pipefail`) and quote shell expansions. No formatter or linter is configured.
+Four-space Python indentation, two-space Bash indentation, `snake_case` functions and variables, PascalCase classes. Keep Portuguese user-facing text and descriptive Portuguese identifiers. Retain `set -euo pipefail` in Bash and quote expansions. Telão styling follows the project deck (see `docs/CONTEXTO_PROJETO.md`); keep telão text large (stage is 1920 × 1080) and in short sentences for the EJA audience. No formatter or linter is configured.
 
 ## Testing Guidelines
 
-No automated framework or coverage threshold is configured. For server changes, use the loopback command above with disposable records. Verify page rendering, unknown-route rejection, consent rejection without recording, valid submissions producing one JSON line, and invalid or oversized input rejection. For network changes, check access-point connectivity and profile cleanup on exit using demonstration equipment.
+Run the unit tests after any server, control or comparison change. For interface changes also run `tests/verificar_interface.cjs`; it checks that the seven telão steps do not overlap the footer. Rehearse the physical access point with a phone before presenting.
 
 ## Commit & Pull Request Guidelines
 
-This directory has no Git metadata, so no existing commit convention can be established. If versioned, use concise imperative subjects, such as `Fix consent validation`. Pull requests should explain behavior changes and verification performed; link relevant issues and include screenshots for page changes.
+Use concise imperative subjects, such as `Fix consent validation`. Pull requests should explain behavior changes and verification performed and include screenshots for telão or page changes.
 
 ## Participant Data & Configuration
 
-Preserve explicit consent before recording and disabled automatic request logging. Never commit participant records. Use disposable log paths during development and remove presentation records when no longer needed.
+Preserve explicit consent before recording. Never commit participant records, certificates or keys (see `.gitignore`). Use disposable log paths during development and remove presentation records when no longer needed.

@@ -1,6 +1,6 @@
 # Roteiro para conduzir a apresentação
 
-Use este roteiro na transição da explicação teórica para a dinâmica final. Reserve **13 a 15 minutos**. As sete etapas já estão no telão do app; os textos para criar slides estão no [guia de slides](GUIA_SLIDES_DINAMICA.md).
+Use este roteiro na transição da explicação teórica para a dinâmica final. Reserve **13 a 15 minutos**. As sete etapas já estão no telão do app; os textos para criar slides estão no [guia de slides](GUIA_SLIDES_DINAMICA.md); o encaixe com o deck do projeto está em [CONTEXTO_PROJETO.md](CONTEXTO_PROJETO.md).
 
 ## Antes de o público chegar
 
@@ -9,7 +9,7 @@ Uma pessoa pode conduzir a fala e outra operar o painel e ajudar nas conexões. 
 1. Abra **Rede aberta** e configure o projetor para **estender a tela**.
 2. Ensaie o fluxo. Depois, encerre o ensaio e selecione **Demonstração real**.
 3. Clique em **Verificar equipamento**, selecione o adaptador e use **Iniciar demonstração real**. Confirme a operação e autorize pela janela do sistema, se necessário.
-4. Clique em **Preparar comparação** e configure o certificado no celular de demonstração. Siga o [tutorial do certificado](README.md#certificado-https-no-celular).
+4. Clique em **Preparar comparação** e configure o certificado no celular de demonstração. Siga o [tutorial do certificado](../README.md#certificado-https-no-celular).
 5. Teste no celular o formulário original e os envios HTTP/HTTPS usando apenas dados fictícios. Teste também **Enviar pelo notebook (HTTP + HTTPS)**.
 6. Mantenha essa comparação preparada até o fim da apresentação. Preparar outra comparação gera outro certificado; iniciar outra dinâmica encerra a comparação anterior.
 7. Clique em **Abrir telão**, mova essa janela para o projetor e use **Tela cheia**. Selecione a etapa **1** no painel e confira que os detalhes reais estão ocultos.
@@ -20,13 +20,13 @@ Os envios de teste podem permanecer nos totais dessa sessão. Apresente os núme
 
 | Tempo aproximado | Etapa do app | Sua ação principal |
 | --- | --- | --- |
-| 0–1 min | 1. O que uma conexão revela? | Explicar o objetivo e a participação voluntária |
-| 1–3 min | 2. Entre na rede da atividade | Ajudar o público a conectar e abrir a página |
+| 0–1 min | 1. Por que não confiar em Wi-Fi aberto? | Explicar o objetivo e a participação voluntária |
+| 1–3 min | 2. Entre na rede de teste | Ajudar o público a conectar e abrir a página |
 | 3–4 min | 3. Leia e escolha participar | Orientar o envio com apelido fictício |
-| 4–6 min | 4. Observar e gravar são etapas diferentes | Explicar IP, MAC e informações do navegador |
+| 4–6 min | 4. Ver e guardar são coisas diferentes | Explicar IP, MAC e informações do navegador |
 | 6–7 min | 5. Um envio, quatro informações | Relacionar o formulário ao registro |
 | 7–11 min | 6. O mesmo texto, duas conexões | Comparar HTTP/HTTPS pelo celular e pelo notebook |
-| 11–13 min | 7. O cuidado começa antes do clique | Ouvir o público e encerrar a dinâmica |
+| 11–13 min | 7. Como se proteger | Ouvir o público e encerrar a dinâmica |
 
 Use **Próximo**, **Anterior** ou os números para mudar de etapa. Cada mudança oculta os detalhes que estavam projetados.
 

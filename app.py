@@ -86,6 +86,7 @@ class HandlerApp(BaseHTTPRequestHandler):
         arquivos = {"/": ("index.html", "text/html; charset=utf-8"),
                     "/telao": ("telao.html", "text/html; charset=utf-8"),
                     "/estilo.css": ("estilo.css", "text/css; charset=utf-8"),
+                    "/telao.css": ("telao.css", "text/css; charset=utf-8"),
                     "/app.js": ("app.js", "text/javascript; charset=utf-8"),
                     "/conteudo.js": ("conteudo.js", "text/javascript; charset=utf-8"),
                     "/icone.svg": ("icone.svg", "image/svg+xml")}

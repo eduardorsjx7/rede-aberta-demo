@@ -1,0 +1,68 @@
+/* Telão — identidade visual do deck "Inclusão Digital e Segurança da Informação" (Unit).
+   Palco 1920 × 1080; carrega depois de estilo.css e só sobrescreve o que é do telão. */
+:root{--unit-navy:#14254d;--unit-azul:#2453a6;--unit-amarelo:#f2b632;--unit-amarelo-claro:#fcefc9;--unit-ouro:#8a6d1a;--unit-fundo:#e9eef7;--unit-cartao:#fdfcf8;--unit-texto:#1b2233;--unit-muted:#5a6375;--unit-linha:#c9d3e8}
+.telao{background:var(--unit-navy);font-family:"Montserrat","Trebuchet MS","Liberation Sans",sans-serif}
+.telao .barra-telao{color:#c9d3e8}
+.telao .palco{background:var(--unit-fundo);color:var(--unit-navy);padding:64px 110px}
+.telao .slide-header{align-items:flex-start}
+.marca-telao{display:block;font-size:20px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--unit-azul);line-height:1.4}
+.marca-telao>span{display:block;font-size:24px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--unit-muted);margin-top:6px}
+.barra-amarela{display:block;width:72px;height:7px;border-radius:4px;background:var(--unit-amarelo);margin-bottom:22px}
+.telao .selo-telao{border:0;background:var(--unit-amarelo-claro);color:var(--unit-ouro);border-radius:12px;padding:14px 26px;font-size:21px;font-weight:700;letter-spacing:1.5px}
+.telao .slide{padding-top:56px}
+.topo-slide{display:flex;align-items:center;gap:26px}
+.telao .passo-telao{font-size:24px;font-weight:700;letter-spacing:2px;color:var(--unit-azul)}
+.progresso-telao{display:flex;gap:10px}
+.progresso-telao i{display:block;width:44px;height:8px;border-radius:4px;background:var(--unit-linha)}
+.progresso-telao i.feito{background:var(--unit-azul)}
+.progresso-telao i.atual{background:var(--unit-amarelo)}
+.telao .slide h1{font-size:80px;font-weight:800;line-height:1.08;letter-spacing:-2.5px;color:var(--unit-navy);margin:26px 0 44px;max-width:30ch}
+.telao .slide-lead{font-size:40px;line-height:1.45;color:var(--unit-muted);max-width:50ch;font-weight:500}
+.telao .desenho{border-color:var(--unit-azul);color:var(--unit-azul);background:var(--unit-cartao)}
+.telao .desenho.wifi{background:var(--unit-navy);color:var(--unit-amarelo);border-color:var(--unit-navy)}
+.telao .caminho{margin:64px 0 52px}.telao .caminho strong{font-size:32px;font-weight:700}
+.telao .ligacao{background:var(--unit-azul)}
+.telao .ligacao:after{border-left-color:var(--unit-azul)}
+/* Avisos: cartão claro com borda azul; variante amarela para ambiente controlado. */
+.telao .slide-aviso{background:var(--unit-cartao);color:var(--unit-texto);border-left:8px solid var(--unit-azul);border-radius:14px;padding:24px 34px;font-size:30px;line-height:1.45;box-shadow:0 4px 18px #14254d14}
+.telao .slide-aviso b{display:block;font-size:22px;letter-spacing:1.5px;text-transform:uppercase;color:var(--unit-azul);margin-bottom:6px}
+.telao .slide-aviso.controle{background:var(--unit-amarelo-claro);border-left-color:var(--unit-amarelo)}
+.telao .slide-aviso.controle b{color:var(--unit-ouro)}
+/* Cartões: três colunas, o último em destaque navy (como no deck). */
+.telao .passos-form>div,.telao .linha-tempo>div,.telao .aprendizados>div,.telao .comparacao-intro>div{background:var(--unit-cartao);border-radius:20px;box-shadow:0 4px 18px #14254d14;padding:34px}
+.telao .passos-form span,.telao .aprendizados span{display:flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:16px;background:var(--unit-navy);color:var(--unit-amarelo);font-size:34px;font-weight:800}
+.telao .passos-form h2,.telao .linha-tempo h2,.telao .aprendizados h2{font-size:38px;font-weight:800;line-height:1.2;color:var(--unit-navy);margin:28px 0 16px}
+.telao .passos-form p,.telao .linha-tempo p,.telao .aprendizados p{font-size:30px;line-height:1.5;color:var(--unit-muted);margin:0;padding:0;border:0}
+.telao .linha-tempo span{font-size:21px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--unit-azul)}
+.telao .linha-tempo>div:last-child,.telao .aprendizados>div:last-child,.telao .comparacao-intro>div.destaque{background:var(--unit-navy);color:#fff}
+.telao .linha-tempo>div:last-child h2,.telao .aprendizados>div:last-child h2,.telao .comparacao-intro>div.destaque h2{color:#fff}
+.telao .linha-tempo>div:last-child span{color:var(--unit-amarelo)}
+.telao .linha-tempo>div:last-child p,.telao .aprendizados>div:last-child p,.telao .comparacao-intro>div.destaque p{color:#dbe4f5}
+.telao .aprendizados>div:last-child span{background:var(--unit-amarelo);color:var(--unit-navy)}
+.telao .aprendizados{display:grid;grid-template-columns:repeat(3,1fr);gap:35px;margin:50px 0 0}
+.telao .conectar>div{border-left:8px solid var(--unit-amarelo);padding-left:34px}
+.telao .conectar span{font-size:28px;font-weight:600;color:var(--unit-muted)}
+.telao .conectar strong{font-weight:800;color:var(--unit-navy)}
+.telao .conectar .endereco{color:var(--unit-azul)}
+.telao .conectar p{font-size:28px}
+.telao .ficha-exemplo{background:var(--unit-cartao);border:0;border-radius:20px;box-shadow:0 4px 18px #14254d14;max-width:1300px;padding:34px 46px}
+.telao .ficha-exemplo>span{font-size:22px;font-weight:700;letter-spacing:1.5px;color:var(--unit-ouro)}
+.telao .ficha-exemplo dl>div{border-top:2px solid var(--unit-fundo);font-size:32px}
+.telao .ficha-exemplo dt{font-weight:600;color:var(--unit-muted)}
+.telao .ficha-exemplo dd{font-weight:700}
+.telao .comparacao-intro{gap:35px}
+.telao .comparacao-intro h2{font-size:48px;font-weight:800;color:var(--unit-azul);margin:0 0 20px}
+.telao .comparacao-intro p{font-size:34px;line-height:1.45;color:var(--unit-muted)}
+.telao .pergunta{font-size:38px;font-weight:700;color:var(--unit-azul);max-width:40ch;margin-top:46px}
+/* Rodapé como no deck: nome do projeto à esquerda, contagem à direita. */
+.telao .slide-footer{font-size:21px;font-weight:500;color:var(--unit-muted);border-top:2px solid var(--unit-linha)}
+.telao .slide-footer b{margin-left:18px;padding-left:18px;border-left:2px solid var(--unit-linha);font-weight:700;color:var(--unit-navy)}
+/* Painéis com dados e comparação reais. */
+.telao .dados-telao,.telao .comparacao-telao{top:200px;border:0;border-top:8px solid var(--unit-amarelo);background:var(--unit-cartao);box-shadow:0 12px 50px #14254d33}
+.telao .dados-titulo h2{font-weight:800;color:var(--unit-navy)}
+.telao .dados-titulo span{font-weight:700;letter-spacing:1.5px;color:var(--unit-ouro);background:var(--unit-amarelo-claro);padding:8px 18px;border-radius:10px}
+.telao .dados-colunas th{background:var(--unit-fundo);color:var(--unit-muted)}
+.telao .comparacao-telao .quadro-protocolo{background:var(--unit-fundo);border-radius:16px}
+.telao .comparacao-telao .quadro-protocolo h3{font-weight:800;color:var(--unit-azul)}
+.telao .quadro-protocolo .veredito{color:var(--unit-navy)}
+.telao .conclusao-comparacao{font-weight:600;color:var(--unit-navy)}

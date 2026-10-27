@@ -1,8 +1,23 @@
-# Demonstração de rede Wi-Fi aberta
+# Rede aberta — demonstração de Wi-Fi aberto
+
+> Parte do projeto de intervenção **Inclusão Digital e Segurança da Informação** (Unit · Sistemas de Informação), com a EMEF Prof. Diomedes Santos Silva, Aracaju/SE. Esta é a **demonstração ao vivo** do deck: “Por que não confiar em Wi-Fi aberto”. Veja como ela se encaixa na palestra em [docs/CONTEXTO_PROJETO.md](docs/CONTEXTO_PROJETO.md).
+
+## Mapa do repositório
+
+| Pasta ou arquivo | Para que serve |
+| --- | --- |
+| `app.py`, `controle.py` | Painel da equipe, controle da rede e das etapas |
+| `servidor.py` | Página de participação (`http://10.42.0.1:8080`) |
+| `comparacao.py` | Laboratório HTTP × HTTPS |
+| `interface/` | Painel (`index.html`, `app.js`, `estilo.css`), **telão** (`telao.html`, `telao.css`) e textos das etapas (`conteudo.js`) |
+| `docs/` | Contexto do projeto, roteiro de fala e guia de slides |
+| `tests/` | Testes automatizados e verificação da interface |
+| `iniciar.sh`, `clientes.sh`, `abrir_app.sh`, `instalar_atalho.py` | Scripts de linha de comando e atalho do app |
+
 
 Este projeto cria um ponto de acesso **sem senha** para uma atividade presencial e oferece uma página educativa em `http://10.42.0.1:8080`. A página só grava dados depois que a pessoa marca a caixa de concordância e envia o formulário: horário, IP, identificação do navegador e apelido opcional. O comando `clientes.sh` mostra os endereços IP e MAC presentes na tabela de vizinhos do sistema; essa consulta não grava arquivo.
 
-Para conduzir a fala, os cliques e a participação do público, consulte o [roteiro de apresentação](ROTEIRO_APRESENTACAO.md).
+Para conduzir a fala, os cliques e a participação do público, consulte o [roteiro de apresentação](docs/ROTEIRO_APRESENTACAO.md).
 
 ## Baixar e iniciar
 
@@ -23,7 +38,7 @@ Abra **Rede aberta** pelo menu de aplicativos do Linux ou pelo atalho **Rede Abe
 
 1. Comece em **Ensaio com dados fictícios** e clique em **Iniciar ensaio**. Os botões **Simular aparelho** e **Simular envio** criam exemplos somente na memória, sem alterar o Wi-Fi.
 2. Clique em **Abrir telão**, mova a nova janela para o projetor e use **Tela cheia**. Configure o projetor para **estender** a tela; mantenha o painel da equipe no notebook.
-3. Avance as sete etapas pelos botões **Anterior**, **Próximo** ou pelos números. As notas de fala aparecem apenas no painel. O roteiro completo está em [GUIA_SLIDES_DINAMICA.md](GUIA_SLIDES_DINAMICA.md).
+3. Avance as sete etapas pelos botões **Anterior**, **Próximo** ou pelos números. As notas de fala aparecem apenas no painel. O roteiro completo está em [GUIA_SLIDES_DINAMICA.md](docs/GUIA_SLIDES_DINAMICA.md).
 4. Para usar aparelhos reais, encerre o ensaio, selecione **Demonstração real**, clique em **Verificar equipamento**, escolha o adaptador e clique em **Iniciar demonstração real**. Confirme a troca de conexão; se necessário, autorize pela janela do sistema. A página fica em `http://10.42.0.1:8080`.
 5. Os resultados atualizam automaticamente. **Atualizar aparelhos** refaz a consulta de vizinhos. **Consultar detalhes nesta janela** mostra os dados à equipe. **Revelar dados no telão** pede confirmação antes de projetá-los. **Ocultar dados no telão** ou mudar de etapa os esconde novamente.
 6. Clique em **Encerrar dinâmica** para desligar a página, remover o perfil criado pelo app e tentar restaurar a conexão Wi-Fi anterior. Se aparecer **Limpeza pendente**, clique novamente após resolver o erro indicado.

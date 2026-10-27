@@ -2,6 +2,8 @@
 
 Este roteiro foi pensado para uma atividade presencial de aproximadamente **10 a 13 minutos**, ao final da apresentação. Use os textos indicados na tela e deixe as explicações nas notas do apresentador. O conteúdo corresponde ao funcionamento de `servidor.py`, `iniciar.sh` e `clientes.sh`.
 
+> **Telão do app:** as sete etapas projetadas pelo app seguem a identidade visual do deck do projeto (azul-marinho, amarelo, Montserrat) e usam os títulos “Por que não confiar em Wi-Fi aberto?”, “Entre na rede de teste”, “Leia e escolha participar”, “Ver e guardar são coisas diferentes”, “Um envio, quatro informações”, “O mesmo texto, duas conexões” e “Como se proteger”. Este guia serve para quem preferir montar slides próprios. Veja [CONTEXTO_PROJETO.md](CONTEXTO_PROJETO.md).
+
 ## Objetivo da atividade
 
 Mostrar quais informações aparecem na comunicação entre um celular, a rede Wi-Fi e uma página local. Ao final, o público deverá distinguir informações observáveis na conexão de dados gravados após participação voluntária.
@@ -151,7 +153,7 @@ Mostrar quais informações aparecem na comunicação entre um celular, a rede W
 
 “Enviamos o mesmo texto por duas conexões. Aqui observamos os bytes na entrada dos nossos servidores de teste, antes da descriptografia TLS. No HTTP conseguimos localizar o formulário. No HTTPS vemos registros criptografados. Depois de receber e descriptografar, o servidor lê a mensagem normalmente. IPs, portas e tamanhos continuam observáveis na comunicação.”
 
-**Preparação do certificado:** a página HTTP oferece o download do certificado público de laboratório, válido por dois dias, e sua impressão SHA-256. Prepare o aparelho antes da fala, conferindo a impressão no painel. A cada nova comparação o certificado muda. Siga as instruções de Android/iPhone no [README.md](README.md#certificado-https-no-celular); remova o certificado após a atividade. O notebook utiliza confiança restrita ao cliente do teste e não precisa dessa instalação.
+**Preparação do certificado:** a página HTTP oferece o download do certificado público de laboratório, válido por dois dias, e sua impressão SHA-256. Prepare o aparelho antes da fala, conferindo a impressão no painel. A cada nova comparação o certificado muda. Siga as instruções de Android/iPhone no [README.md](../README.md#certificado-https-no-celular); remova o certificado após a atividade. O notebook utiliza confiança restrita ao cliente do teste e não precisa dessa instalação.
 
 **Precisão da explicação:** a observação é de fluxos TCP nos servidores da atividade, não de pacotes de todos os usuários da rede. Os arquivos `.bin` não são PCAP. O texto “Recebido pelo servidor” representa os dados no destino, enquanto os bytes exibidos representam a entrada da conexão. Não use a aparência hexadecimal sozinha como prova de criptografia: destaque também a negociação TLS efetivamente realizada e a comparação com o HTTP.
 
