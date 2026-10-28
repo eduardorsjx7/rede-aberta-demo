@@ -109,6 +109,31 @@
 @keyframes halo{0%{box-shadow:0 0 0 0 #2453a655}100%{box-shadow:0 0 0 34px #2453a600}}
 @keyframes fluxo{to{background-position:26px 0}}
 @keyframes pacote{0%{left:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:calc(100% - 22px);opacity:0}}
+/* Etapa “Entre na rede de teste”: dois passos lado a lado, imitando a lista de Wi-Fi e a barra de endereço do celular */
+.conectar-passos{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:30px 0 0;text-align:left}
+.passo-conexao{background:var(--unit-cartao);border-radius:24px;padding:32px 36px 36px;box-shadow:0 4px 18px #14254d14;display:flex;flex-direction:column;gap:24px;min-width:0}
+.passo-conexao .topo-passo{display:flex;align-items:center;gap:18px}
+.passo-conexao .num{display:flex;align-items:center;justify-content:center;flex:none;width:58px;height:58px;border-radius:16px;background:var(--unit-navy);color:var(--unit-amarelo);font-size:30px;font-weight:800}
+.passo-conexao .instrucao{margin:0;font-size:30px;font-weight:600;line-height:1.3;color:var(--unit-muted)}
+.tela-wifi,.barra-endereco{flex:1;display:flex;align-items:center;gap:22px;border-radius:18px;padding:22px 26px;min-width:0}
+.tela-wifi{background:var(--unit-amarelo-claro);border:3px solid var(--unit-amarelo);color:var(--unit-navy)}
+.barra-endereco{background:#fff;border:3px solid var(--unit-linha);color:#a3242f}
+.tela-wifi>svg,.barra-endereco>svg{flex:none;width:56px;height:56px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tela-wifi strong,.barra-endereco strong{display:block;font-size:42px;font-weight:800;line-height:1.15;letter-spacing:-1px;white-space:nowrap}
+.tela-wifi .nome-rede{color:var(--unit-navy)}
+.barra-endereco .endereco{color:var(--unit-azul);font-variant-numeric:tabular-nums}
+.chip-aberta{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:6px 14px 6px 10px;border-radius:30px;background:#fff;font-size:22px;font-weight:700;color:var(--unit-ouro)}
+.chip-aberta svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.nao-seguro{display:block;margin-bottom:4px;font-size:22px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#a3242f}
+.barra-endereco .cursor{display:inline-block;width:4px;height:44px;margin-left:6px;vertical-align:-6px;background:var(--unit-azul)}
+@media (prefers-reduced-motion:no-preference){
+  .tela-wifi .onda{animation:onda 2.2s ease-in-out infinite}
+  .tela-wifi .o2{animation-delay:.25s}.tela-wifi .o3{animation-delay:.5s}
+  .barra-endereco .cursor{animation:cursor 1.1s steps(1) infinite}
+  .chip-aberta{animation:aviso-chip 2.6s ease-in-out infinite}
+}
+@keyframes cursor{50%{opacity:0}}
+@keyframes aviso-chip{0%,100%{box-shadow:0 0 0 0 #f2b63200}50%{box-shadow:0 0 0 6px #f2b63255}}
 
 /* Palco 1920 × 1080 escalado, no visual do deck do projeto (navy, azul Unit e amarelo). Visual único, pensado para projetor. */
 html,body{height:100%;background:#14254d}body{margin:0}
@@ -368,7 +393,7 @@ window.ETAPAS = [
     titulo: 'Entre na rede de teste',
     resumo: 'Mantenha nome da rede e endereço visíveis enquanto o público conecta.',
     nota: 'A rede não exige senha. O celular pode avisar que não há internet: mantenha a conexão. Digite o endereço completo no navegador; a página não abre automaticamente. A dinâmica funciona sem internet. Em ensaio, não há ponto de acesso real.',
-    corpo: '<div class="conectar"><div><span>1. No celular, abra o Wi-Fi e escolha</span><strong class="nome-rede">EXTENSAO-REDE-ABERTA</strong><p>Sem senha</p></div><div><span>2. Abra o navegador e digite</span><strong class="endereco">http://10.42.0.1:8080</strong></div></div><p class="slide-aviso"><b>Apareceu “sem internet”?</b>Está certo! Continue conectado para abrir a página de teste.</p>'
+    corpo: '<div class="conectar-passos"><div class="passo-conexao"><div class="topo-passo"><span class="num">1</span><p class="instrucao">No celular, abra o Wi-Fi e escolha</p></div><div class="tela-wifi"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="onda o3" d="M2.5 9.5a14 14 0 0 1 19 0"/><path class="onda o2" d="M5.5 13a9.5 9.5 0 0 1 13 0"/><path class="onda o1" d="M8.7 16.4a4.6 4.6 0 0 1 6.6 0"/><circle cx="12" cy="19.7" r="1.3" fill="currentColor" stroke="none"/></svg><div><strong class="nome-rede">EXTENSAO-REDE-ABERTA</strong><span class="chip-aberta"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></svg>Sem senha</span></div></div></div><div class="passo-conexao"><div class="topo-passo"><span class="num">2</span><p class="instrucao">Abra o navegador e digite</p></div><div class="barra-endereco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></svg><div><span class="nao-seguro">Não seguro</span><strong class="endereco">http://10.42.0.1:8080<i class="cursor"></i></strong></div></div></div></div><p class="slide-aviso"><b>Apareceu “sem internet”?</b>Está certo! Continue conectado para abrir a página de teste.</p>'
   },
   {
     titulo: 'Leia e escolha participar',
@@ -530,7 +555,7 @@ window.addEventListener('DOMContentLoaded', () => {
   function esconderPaineis() { $('dados-telao').hidden = true; $('comparacao-telao').hidden = true; }
 
   let direcao = 1;
-  const ITENS = ['.cards>*', '.agenda>li', '.escala>div', '.sinais>div', '.mensagens>.msg', '.lados>.lado', '.fatos>div', '.nomes>li', '.equipe .coluna>.card', '.refs>li', '.ods>span', '.aprendizados>div', '.passos-form>div', '.linha-tempo>div', '.comparacao-intro>div', '.caminho>*', '.conectar>div', '.ficha-exemplo', '.com-foto>img', '.grupos>.card', '#corpo-telao>.slide-lead', '#corpo-telao>.slide-aviso', '#corpo-telao>.pergunta', '#corpo-telao>.dica-quiz', '#corpo-telao>.total-tempo'].join(',');
+  const ITENS = ['.cards>*', '.agenda>li', '.escala>div', '.sinais>div', '.mensagens>.msg', '.lados>.lado', '.fatos>div', '.nomes>li', '.equipe .coluna>.card', '.refs>li', '.ods>span', '.aprendizados>div', '.passos-form>div', '.linha-tempo>div', '.comparacao-intro>div', '.caminho>*', '.conectar>div', '.conectar-passos>*', '.ficha-exemplo', '.com-foto>img', '.grupos>.card', '#corpo-telao>.slide-lead', '#corpo-telao>.slide-aviso', '#corpo-telao>.pergunta', '#corpo-telao>.dica-quiz', '#corpo-telao>.total-tempo'].join(',');
   // Marca os blocos do slide em ordem de leitura; o CSS usa --i para escalonar a entrada.
   function animar(raiz, especial) {
     const palco = $('palco');
