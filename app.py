@@ -22,13 +22,13 @@ from controle import Controle, ErroOperacao
 BASE = Path(__file__).resolve().parent
 CSP = ("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; "
        "frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
-# O telão pode aparecer dentro da apresentação servida pelo próprio app.
+# O telão aparece dentro da apresentação, e a apresentação aparece dentro do painel da equipe.
 CSP_TELAO = CSP.replace("frame-ancestors 'none'", "frame-ancestors 'self'")
 # A apresentação é um arquivo único com estilos e scripts embutidos e a fonte do Google Fonts.
 # Ela não exibe dados de participantes: na demonstração mostra o /telao, que segue com a política estrita.
 CSP_APRESENTACAO = ("default-src 'self'; script-src 'self' 'unsafe-inline'; "
                     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; "
-                    "img-src 'self' data:; frame-src 'self'; connect-src 'self'; frame-ancestors 'none'; "
+                    "img-src 'self' data:; frame-src 'self'; connect-src 'self'; frame-ancestors 'self'; "
                     "base-uri 'none'; form-action 'none'")
 
 

@@ -281,11 +281,14 @@ class TestHttp(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertIn(b'telao-vivo', corpo)
         self.assertIn("frame-src 'self'", headers['Content-Security-Policy'])
-        self.assertIn("frame-ancestors 'none'", headers['Content-Security-Policy'])
-        # Só o telão pode ser exibido dentro da apresentação; o painel continua sem moldura.
+        # A apresentação aparece no painel e o telão dentro dela, sempre na mesma origem; o painel continua sem moldura.
+        self.assertIn("frame-ancestors 'self'", headers['Content-Security-Policy'])
         self.assertIn("frame-ancestors 'self'", self.request('/telao')[2]['Content-Security-Policy'])
         self.assertIn("frame-ancestors 'none'", self.request('/')[2]['Content-Security-Policy'])
         self.assertNotIn('unsafe-inline', self.request('/telao')[2]['Content-Security-Policy'])
+        status, corpo, _ = self.request('/')
+        self.assertIn(b'src="/apresentacao"', corpo)
+        self.assertIn(b'name="palestrante-inclusao"', corpo)
 
 
 class TestParticipacao(unittest.TestCase):

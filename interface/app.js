@@ -129,8 +129,8 @@ function renderizarEquipe() {
   });
   $('observados').textContent = e.observados;
   $('envios').textContent = e.envios;
-  $('revelar').textContent = e.revelado ? 'Ocultar dados no telão' : 'Revelar dados no telão';
-  $('privacidade-texto').textContent = e.revelado ? 'Os detalhes da sessão estão visíveis no telão.' : 'O telão usa exemplos fictícios. Dados reais estão ocultos.';
+  $('revelar').textContent = e.revelado ? 'Ocultar dados na apresentação' : 'Revelar dados na apresentação';
+  $('privacidade-texto').textContent = e.revelado ? 'Os detalhes da sessão estão visíveis na apresentação.' : 'A apresentação usa exemplos fictícios. Dados reais estão ocultos.';
   $('arquivo').textContent = e.arquivo ? `Arquivo desta sessão: ${e.arquivo}` : 'Ensaio: dados fictícios somente na memória.';
   const detalhes = JSON.stringify([e.vizinhos, e.registros]);
   if (detalhes !== ultimoConteudo) {
@@ -237,7 +237,7 @@ function renderizarComparacao() {
   }
   $('fingerprint').textContent = c.fingerprint;
   $('total-comparacao').textContent = `${c.total} ${c.total === 1 ? 'envio nesta comparação' : 'envios nesta comparação'}`;
-  $('projetar-comparacao').textContent = c.telao ? 'Ocultar comparação no telão' : 'Mostrar comparação no telão';
+  $('projetar-comparacao').textContent = c.telao ? 'Ocultar comparação na apresentação' : 'Mostrar comparação na apresentação';
   quadrosComparacao($('resultados-comparacao'), c.envios || []);
 }
 
@@ -295,16 +295,16 @@ async function iniciarInterface() {
     };
     $('abrir-telao').onclick = () => {
       // O telão é a apresentação completa; nas etapas da demonstração ela mostra o telão ao vivo.
-      const janela = window.open('/apresentacao', 'rede-aberta-telao', 'popup,width=1280,height=760');
-      if (!janela) { $('erro').textContent = 'Permita a abertura de janelas neste navegador para usar o telão.'; $('erro').hidden = false; }
+      const janela = window.open('/apresentacao', 'rede-aberta-apresentacao', 'popup,width=1280,height=760');
+      if (!janela) { $('erro').textContent = 'Permita a abertura de janelas neste navegador para abrir a apresentação no projetor.'; $('erro').hidden = false; }
     };
     $('abrir-pagina').onclick = () => { if (estado?.servidor_ativo) window.open('http://127.0.0.1:8080', '_blank', 'noopener'); };
     $('anterior').onclick = () => acao('etapa', {etapa: estado.etapa - 1});
     $('proximo').onclick = () => acao('etapa', {etapa: estado.etapa + 1});
     $('revelar').onclick = async () => {
       if (estado.revelado) return acao('ocultar');
-      const texto = estado.modo === 'ensaio' ? 'Os exemplos fictícios ficarão visíveis no telão. Você poderá ocultá-los a qualquer momento.' : 'IP, MAC e registros de participação ficarão visíveis para o público. Confirme que os participantes foram informados e que deseja projetar esses dados.';
-      if (await confirmar('Revelar detalhes no telão?', texto)) await acao('revelar', {confirmar: true});
+      const texto = estado.modo === 'ensaio' ? 'Os exemplos fictícios ficarão visíveis na apresentação. Você poderá ocultá-los a qualquer momento.' : 'IP, MAC e registros de participação ficarão visíveis para o público. Confirme que os participantes foram informados e que deseja projetar esses dados.';
+      if (await confirmar('Revelar detalhes na apresentação?', texto)) await acao('revelar', {confirmar: true});
     };
     $('enviar-notebook').onclick = async () => {
       if (await confirmar('Enviar o texto fictício pelos dois protocolos?', 'O notebook enviará sua mensagem por HTTP e HTTPS e guardará o texto recebido, horário, IP e bytes de teste. Use somente texto fictício. A conexão HTTPS valida o certificado do laboratório.')) {
@@ -313,7 +313,7 @@ async function iniciarInterface() {
     };
     $('projetar-comparacao').onclick = async () => {
       if (estado.comparacao.telao) return acao('ocultar_comparacao');
-      if (await confirmar('Mostrar a comparação no telão?', 'As mensagens recebidas e as amostras HTTP/HTTPS ficarão visíveis ao público. Confirme que os envios são de demonstração e que os participantes foram informados.')) await acao('mostrar_comparacao', {confirmar: true});
+      if (await confirmar('Mostrar a comparação na apresentação?', 'As mensagens recebidas e as amostras HTTP/HTTPS ficarão visíveis ao público. Confirme que os envios são de demonstração e que os participantes foram informados.')) await acao('mostrar_comparacao', {confirmar: true});
     };
     $('excluir-comparacao').onclick = async () => {
       if (await confirmar('Excluir os dados desta comparação?', 'Apaga os fluxos observados, mensagens e certificados somente da comparação atual. Os registros da dinâmica original serão preservados.')) await acao('excluir_comparacao', {confirmar: true});
