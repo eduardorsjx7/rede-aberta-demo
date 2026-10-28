@@ -220,8 +220,11 @@ html,body{height:100%;background:#14254d}body{margin:0}
 @media (max-width:430px){.barra-telao .texto-btn{display:none}}
 .gire{display:none;position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-size:14px;line-height:1.4;color:#c9d3e8;pointer-events:none}
 @media (orientation:portrait) and (max-width:760px){.gire{display:block}}
+/* Cabeçalho do projeto preso ao topo, longe do título do slide */
+.telao .slide-header{position:absolute;top:34px;left:110px;right:110px}
+.telao .slide-header .barra-amarela{margin-bottom:14px}
 /* ---- Conteúdo centralizado: a área entre o cabeçalho e o rodapé é um bloco flex, e o corpo ocupa o centro dela ---- */
-.telao .slide{position:absolute;top:178px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:stretch;text-align:left}
+.telao .slide{position:absolute;top:196px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:stretch;text-align:left}
 .telao .topo-slide{justify-content:flex-start}
 .telao .slide h1{margin:18px 0 0;max-width:30ch;text-align:left}
 #corpo-telao{flex:1;min-height:0;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}
