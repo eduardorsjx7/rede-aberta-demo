@@ -323,6 +323,11 @@ html.palestrante .notas-painel,html.palestrante .gire{display:none!important}
   .painel-palestrante{top:44%;left:0;width:auto;border-left:0;border-top:3px solid #f2b632;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
   #decorrido{font-size:34px}
 }
+/* Telão ao vivo do app, mostrado no lugar do palco durante a demonstração */
+.telao-vivo{position:absolute;top:calc(var(--barra) + env(safe-area-inset-top,0px));left:0;right:0;bottom:0;width:100%;height:calc(100% - var(--barra) - env(safe-area-inset-top,0px));border:0;background:#14254d;pointer-events:none}
+html.ao-vivo .telao .viewport{visibility:hidden}
+html.palestrante .telao-vivo{width:auto;right:min(40vw,620px)}
+@media (max-width:760px){html.palestrante .telao-vivo{right:0;height:auto;bottom:56%}}
 /* ---- Conteúdo centralizado: a área entre o cabeçalho e o rodapé é um bloco flex, e o corpo ocupa o centro dela ---- */
 .telao .slide{position:absolute;top:196px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:stretch;text-align:left}
 .telao .topo-slide{justify-content:flex-start}
@@ -410,6 +415,7 @@ html.palestrante .notas-painel,html.palestrante .gire{display:none!important}
       <div id="especial" class="especial" hidden></div>
     </article>
   </main>
+  <iframe id="telao-vivo" class="telao-vivo" title="Telão ao vivo da demonstração" hidden></iframe>
   <p class="gire">Gire o celular para ver os slides maiores.</p>
   <aside id="notas" class="notas-painel" hidden></aside>
   <aside id="painel-palestrante" class="painel-palestrante" hidden aria-label="Modo palestrante">
@@ -751,6 +757,7 @@ window.addEventListener('DOMContentLoaded', () => {
     animar(sl.k ? especial : $('corpo-telao'), !!sl.k);
     try { history.replaceState(null, '', '#' + (i + 1)); } catch (_) { /* hash opcional */ }
     atualizarPalestrante();
+    sincronizarApp();
   }
   function ir(n, remoto) {
     const novo = Math.max(0, Math.min(N - 1, n));
@@ -890,6 +897,52 @@ window.addEventListener('DOMContentLoaded', () => {
   $('zerar-btn').onclick = () => { relogio.rodando = false; relogio.acumulado = 0; alternarRelogio(false); };
   $('p-ant').onclick = () => ir(i - 1);
   $('p-prox').onclick = () => ir(i + 1);
+  // ---- Integração com o app: aberta pelo botão “Abrir telão”, a apresentação mostra o telão ao vivo na demonstração ----
+  const noApp = /^https?:$/.test(location.protocol) && location.pathname === '/apresentacao';
+  const demos = SLIDES.map((s, k) => (s.demo ? k : -1)).filter((k) => k >= 0);
+  let etapaApp = null, appAtivo = false, pedida = null, pedidaInicio = 0, pedidaEm = 0;
+  function sincronizarApp() {
+    if (!noApp) return;
+    const vivo = !!SLIDES[i].demo;
+    document.documentElement.classList.toggle('ao-vivo', vivo);
+    const quadro = $('telao-vivo');
+    quadro.hidden = !vivo;
+    if (vivo && !quadro.src.endsWith('/telao')) quadro.src = '/telao';
+    if (vivo) { const alvo = demos.indexOf(i); if (alvo !== etapaApp || pedida !== null) pedirEtapa(alvo); }
+  }
+  function pedirEtapa(n) { pedida = n; pedidaInicio = Date.now(); enviarEtapa(n); }
+  function enviarEtapa(n) {
+    pedidaEm = Date.now();
+    fetch('/api/acao', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acao: 'etapa', etapa: n }), cache: 'no-store' }).catch(() => {});
+  }
+  async function consultarApp() {
+    try {
+      const resposta = await fetch('/api/telao', { cache: 'no-store' });
+      if (!resposta.ok) return;
+      const e = await resposta.json();
+      etapaApp = e.etapa; appAtivo = e.ativo;
+      if (pedida !== null) {
+        // O app recusa pedidos enquanto termina outra ação: repete até ele confirmar a etapa.
+        if (etapaApp === pedida || !appAtivo || Date.now() - pedidaInicio > 6000) pedida = null;
+        else if (Date.now() - pedidaEm > 500) enviarEtapa(pedida);
+        return;
+      }
+      // Se a equipe mudou a etapa pelo painel, a apresentação acompanha enquanto estiver na demonstração.
+      if (appAtivo && SLIDES[i].demo && demos[etapaApp] !== undefined && demos[etapaApp] !== i) ir(demos[etapaApp]);
+    } catch (_) { /* app fechado: a apresentação continua funcionando sozinha */ }
+  }
+  if (noApp) setInterval(consultarApp, 700);
+  // Dentro da apresentação, o telão perde a própria barra: a da apresentação já tem os controles.
+  $('telao-vivo').addEventListener('load', () => {
+    try {
+      const doc = $('telao-vivo').contentDocument;
+      const barra = doc.querySelector('.barra-telao'), area = doc.querySelector('.viewport');
+      if (barra) barra.style.display = 'none';
+      if (area) area.style.top = '0';
+      $('telao-vivo').contentWindow.dispatchEvent(new Event('resize'));
+    } catch (_) { /* outra origem: mantém o telão como está */ }
+  });
   window.addEventListener('resize', ajustar);
   document.addEventListener('fullscreenchange', ajustar);
   ajustar(); mostrar();

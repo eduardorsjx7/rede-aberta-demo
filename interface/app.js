@@ -294,7 +294,8 @@ async function iniciarInterface() {
       await acao('iniciar', {modo: $('modo').value, interface: $('interface').value, confirmar: real});
     };
     $('abrir-telao').onclick = () => {
-      const janela = window.open('/telao', 'rede-aberta-telao', 'popup,width=1280,height=760');
+      // O telão é a apresentação completa; nas etapas da demonstração ela mostra o telão ao vivo.
+      const janela = window.open('/apresentacao', 'rede-aberta-telao', 'popup,width=1280,height=760');
       if (!janela) { $('erro').textContent = 'Permita a abertura de janelas neste navegador para usar o telão.'; $('erro').hidden = false; }
     };
     $('abrir-pagina').onclick = () => { if (estado?.servidor_ativo) window.open('http://127.0.0.1:8080', '_blank', 'noopener'); };

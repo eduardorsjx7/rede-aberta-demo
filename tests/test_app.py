@@ -276,6 +276,17 @@ class TestHttp(unittest.TestCase):
         for path in ('/registros.jsonl', '/dados/app.json', '/../servidor.py', '/api/desconhecida'):
             self.assertEqual(self.request(path)[0], 404)
 
+    def test_apresentacao_e_telao_embutido(self):
+        status, corpo, headers = self.request('/apresentacao')
+        self.assertEqual(status, 200)
+        self.assertIn(b'telao-vivo', corpo)
+        self.assertIn("frame-src 'self'", headers['Content-Security-Policy'])
+        self.assertIn("frame-ancestors 'none'", headers['Content-Security-Policy'])
+        # Só o telão pode ser exibido dentro da apresentação; o painel continua sem moldura.
+        self.assertIn("frame-ancestors 'self'", self.request('/telao')[2]['Content-Security-Policy'])
+        self.assertIn("frame-ancestors 'none'", self.request('/')[2]['Content-Security-Policy'])
+        self.assertNotIn('unsafe-inline', self.request('/telao')[2]['Content-Security-Policy'])
+
 
 class TestParticipacao(unittest.TestCase):
     def setUp(self):

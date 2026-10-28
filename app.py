@@ -20,6 +20,16 @@ from controle import Controle, ErroOperacao
 
 
 BASE = Path(__file__).resolve().parent
+CSP = ("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; "
+       "frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
+# O telão pode aparecer dentro da apresentação servida pelo próprio app.
+CSP_TELAO = CSP.replace("frame-ancestors 'none'", "frame-ancestors 'self'")
+# A apresentação é um arquivo único com estilos e scripts embutidos e a fonte do Google Fonts.
+# Ela não exibe dados de participantes: na demonstração mostra o /telao, que segue com a política estrita.
+CSP_APRESENTACAO = ("default-src 'self'; script-src 'self' 'unsafe-inline'; "
+                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; "
+                    "img-src 'self' data:; frame-src 'self'; connect-src 'self'; frame-ancestors 'none'; "
+                    "base-uri 'none'; form-action 'none'")
 
 
 class ServidorApp(ThreadingHTTPServer):
@@ -41,7 +51,7 @@ class HandlerApp(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
-    def enviar(self, status, conteudo, tipo="application/json; charset=utf-8", cookie=False):
+    def enviar(self, status, conteudo, tipo="application/json; charset=utf-8", cookie=False, csp=CSP):
         corpo = conteudo if isinstance(conteudo, bytes) else json.dumps(conteudo, ensure_ascii=False).encode()
         self.send_response(status)
         self.send_header("Content-Type", tipo)
@@ -49,7 +59,7 @@ class HandlerApp(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Referrer-Policy", "no-referrer")
-        self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
+        self.send_header("Content-Security-Policy", csp)
         if cookie:
             self.send_header("Set-Cookie", f"rede_sessao={self.server.token}; HttpOnly; SameSite=Strict; Path=/")
         self.end_headers()
@@ -83,6 +93,10 @@ class HandlerApp(BaseHTTPRequestHandler):
             else:
                 self.enviar(404, {"erro": "Recurso não encontrado."})
             return
+        if path == "/apresentacao":
+            self.enviar(200, (BASE / "docs" / "apresentacao_completa.html").read_bytes(),
+                        "text/html; charset=utf-8", csp=CSP_APRESENTACAO)
+            return
         arquivos = {"/": ("index.html", "text/html; charset=utf-8"),
                     "/telao": ("telao.html", "text/html; charset=utf-8"),
                     "/estilo.css": ("estilo.css", "text/css; charset=utf-8"),
@@ -94,7 +108,7 @@ class HandlerApp(BaseHTTPRequestHandler):
             self.enviar(404, {"erro": "Recurso não encontrado."})
             return
         nome, tipo = arquivos[path]
-        self.enviar(200, (BASE / "interface" / nome).read_bytes(), tipo)
+        self.enviar(200, (BASE / "interface" / nome).read_bytes(), tipo, csp=CSP_TELAO if path == "/telao" else CSP)
 
     def do_POST(self):
         if not self.host_valido() or self.headers.get("Origin") != self.server.origem:
