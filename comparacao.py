@@ -5,6 +5,7 @@ pelo próprio app. Não são proxies abertos e não capturam tráfego de outros 
 """
 
 import hashlib
+import ipaddress
 import html
 import http.client
 import json
@@ -215,7 +216,7 @@ class Comparacao:
         if resultado.returncode:
             raise ErroComparacao("OpenSSL não conseguiu gerar o certificado de laboratório.")
 
-    def preparar(self, rede_real=False, portas=None):
+    def preparar(self, rede_real=False, portas=None, host="10.42.0.1"):
         if self.ativa:
             raise ErroComparacao("A comparação já está preparada. Encerre-a antes de preparar outra.")
         self.pasta = self.base / "dados" / "comparacoes" / str(uuid.uuid4())
@@ -223,7 +224,7 @@ class Comparacao:
         self.envios = []
         self.token = secrets.token_urlsafe(24)
         self.telao = False
-        self.host = "10.42.0.1" if rede_real else "127.0.0.1"
+        self.host = str(ipaddress.IPv4Address(host)) if rede_real else "127.0.0.1"
         self.parar.clear()
         # A chave nunca é publicada e os certificados valem somente dois dias.
         self._openssl("req", "-x509", "-newkey", "rsa:2048", "-nodes", "-sha256", "-days", "2",
@@ -235,7 +236,7 @@ class Comparacao:
                       "-out", "servidor.csr", "-subj", "/CN=Rede Aberta Demonstracao")
         (self.pasta / "extensoes.cnf").write_text(
             "basicConstraints=critical,CA:FALSE\nkeyUsage=critical,digitalSignature,keyEncipherment\n"
-            "extendedKeyUsage=serverAuth\nsubjectAltName=IP:127.0.0.1,IP:10.42.0.1,DNS:localhost\n"
+            f"extendedKeyUsage=serverAuth\nsubjectAltName={','.join('IP:' + ip for ip in dict.fromkeys(('127.0.0.1', '10.42.0.1', self.host)))},DNS:localhost\n"
             # Python 3.13+ verifica em modo estrito e exige os identificadores de chave.
             "subjectKeyIdentifier=hash\nauthorityKeyIdentifier=keyid,issuer\n", encoding="utf-8")
         self._openssl("x509", "-req", "-in", "servidor.csr", "-CA", "ca.crt", "-CAkey", "ca.key",

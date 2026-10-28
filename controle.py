@@ -1,5 +1,6 @@
 """Operações da demonstração, sem privilégios no servidor HTTP de controle."""
 
+import ipaddress
 import json
 import os
 import re
@@ -28,6 +29,10 @@ class ErroOperacao(Exception):
 MENSAGEM_SEM_LINUX = ("A demonstração real (rede Wi-Fi aberta) precisa de Linux com NetworkManager e um adaptador "
                       "com modo AP. Neste computador, use o Ensaio com dados fictícios e a comparação HTTP × HTTPS "
                       "pelo notebook.")
+MENSAGEM_MAC_SEM_REDE = ("Ligue o Compartilhamento de Internet do Mac: Ajustes do Sistema › Geral › Compartilhamento › "
+                         "Compartilhamento de Internet. Em “Compartilhar a conexão de”, escolha uma fonte que não seja o "
+                         "Wi-Fi (iPhone por USB, adaptador Ethernet ou Ponte Thunderbolt); em “Para aparelhos usando”, "
+                         "marque Wi-Fi. Depois clique em Verificar equipamento de novo.")
 
 
 class Rede:
@@ -110,12 +115,91 @@ class Rede:
         return [{"ip": item.get("dst", ""), "mac": item.get("lladdr", "—"),
                  "estado": ", ".join(item.get("state", []))} for item in json.loads(saida)]
 
+    def endereco(self, interface):
+        return "10.42.0.1"
+
+    def nome_rede(self, interface):
+        return SSID
+
+
+class RedeMac(Rede):
+    """Modo real no macOS: usa a rede Wi-Fi do Compartilhamento de Internet, ligada pela equipe nos Ajustes.
+
+    O app não altera ajustes do sistema. Só aceita as interfaces bridge do compartilhamento, para observar
+    apenas aparelhos que entraram na rede da demonstração.
+    """
+
+    def enderecos(self):
+        atual, enderecos = None, {}
+        for linha in self.executar(["ifconfig"]).splitlines():
+            nome = re.match(r"^([a-z0-9]+): flags=", linha)
+            if nome:
+                atual = nome.group(1)
+                continue
+            ipv4 = re.match(r"\s+inet (\d+\.\d+\.\d+\.\d+) ", linha)
+            if atual and ipv4 and atual not in enderecos:
+                enderecos[atual] = ipv4.group(1)
+        return enderecos
+
+    def interfaces(self):
+        return sorted(nome for nome in self.enderecos() if nome.startswith("bridge") and nome != "bridge0")
+
+    def verificar(self, interface):
+        if interface not in self.interfaces():
+            raise ErroOperacao(MENSAGEM_MAC_SEM_REDE)
+        if not shutil.which("arp"):
+            raise ErroOperacao("O comando arp não foi encontrado para consultar os aparelhos observados.")
+
+    def anterior(self, interface):
+        return None
+
+    # A rede é do Compartilhamento de Internet: o app não cria, ativa nem remove conexões no macOS.
+    def criar(self, interface, identificador):
+        pass
+
+    def ativar(self, interface, identificador):
+        pass
+
+    def remover(self, identificador):
+        pass
+
+    def restaurar(self, interface, identificador):
+        pass
+
+    def vizinhos(self, interface):
+        proprio = self.endereco(interface)
+        aparelhos = []
+        for linha in self.executar(["arp", "-an", "-i", interface]).splitlines():
+            item = re.match(r"\? \((\d+\.\d+\.\d+\.\d+)\) at (\S+)", linha)
+            if not item or item.group(1) == proprio:
+                continue
+            ip, mac = item.groups()
+            # Ignora endereços de grupo (multicast/broadcast), que não são aparelhos.
+            if mac.startswith(("1:0:5e", "ff:ff")) or ip.endswith(".255") or ipaddress.ip_address(ip).is_multicast:
+                continue
+            completo = mac != "(incomplete)"
+            aparelhos.append({"ip": ip, "mac": mac if completo else "—", "estado": "OBSERVADO" if completo else "INCOMPLETO"})
+        return aparelhos
+
+    def endereco(self, interface):
+        return self.enderecos().get(interface)
+
+    def nome_rede(self, interface):
+        try:
+            saida = self.executar(["defaults", "read", "/Library/Preferences/SystemConfiguration/com.apple.nat", "NAT"])
+        except ErroOperacao:
+            return None
+        nome = re.search(r'NetworkName = "?([^";\n]+)"?;', saida)
+        return nome.group(1).strip() if nome else None
+
 
 class Controle:
     def __init__(self, diretorio, rede=None):
         # Caminho real: no macOS, /var aponta para /private/var e as comparações de pasta precisam bater.
         self.diretorio = Path(diretorio).resolve()
-        self.rede = rede or Rede()
+        self.rede = rede or (RedeMac() if sys.platform == "darwin" else Rede())
+        self.ssid = SSID
+        self.host_rede = "10.42.0.1"
         self.lock = threading.RLock()
         self.ocupado = False
         self.fechando = False
@@ -212,7 +296,8 @@ class Controle:
                 "modo": self.modo, "ativo": self.ativo, "ocupado": self.ocupado,
                 "etapa": self.etapa, "revelado": self.revelado,
                 "total_etapas": TOTAL_ETAPAS,
-                "ssid": SSID, "url": URL_PARTICIPANTES,
+                "ssid": self.ssid, "url": f"http://{self.host_rede}:8080",
+                "plataforma": "macos" if isinstance(self.rede, RedeMac) else "linux",
                 "envios": len(registros), "observados": len(self.vizinhos),
                 "servidor_ativo": bool(self.thread_servidor and self.thread_servidor.is_alive()),
                 "comparacao": self.comparacao.estado(detalhes=not publico or self.comparacao.telao),
@@ -262,9 +347,14 @@ class Controle:
                 self.interfaces = interfaces
             selecionada = dados.get("interface") or (interfaces[0] if interfaces else "")
             self.rede.verificar(selecionada)
+            self.definir_rede(selecionada)
             with self.lock:
                 self.interface = selecionada
-                self.mensagem = "Equipamento pronto: adaptador com suporte AP. A rede atual foi preservada."
+                if isinstance(self.rede, RedeMac):
+                    self.mensagem = (f"Rede pronta: “{self.ssid}” pelo Compartilhamento de Internet, página em "
+                                     f"http://{self.host_rede}:8080. O app não muda ajustes do Mac.")
+                else:
+                    self.mensagem = "Equipamento pronto: adaptador com suporte AP. A rede atual foi preservada."
         elif acao == "iniciar":
             self.iniciar(dados)
         elif acao == "encerrar":
@@ -314,9 +404,9 @@ class Controle:
                 self.revelado = False
                 self.mensagem = "Dados desta sessão excluídos."
         elif acao == "preparar_comparacao":
-            self.comparacao.preparar(rede_real=self.ativo and self.modo == "real")
+            self.comparacao.preparar(rede_real=self.ativo and self.modo == "real", host=self.host_rede)
             if self.servidor:
-                self.servidor.RequestHandlerClass.comparacao_url = "http://10.42.0.1:8081/"
+                self.servidor.RequestHandlerClass.comparacao_url = f"http://{self.host_rede}:8081/"
             self.mensagem = "Comparação HTTP/HTTPS pronta. Use o formulário no celular ou envie pelo notebook."
         elif acao == "enviar_notebook":
             if dados.get("confirmar") is not True:
@@ -340,6 +430,18 @@ class Controle:
             self.revelado = False
         self.registrar_evento(f"{acao.capitalize()}: operação concluída.")
 
+    def definir_rede(self, interface):
+        """Guarda o nome da rede e o endereço que os participantes usam (variam no macOS)."""
+        endereco = getattr(self.rede, "endereco", lambda _: None)(interface) or "10.42.0.1"
+        try:
+            ipaddress.IPv4Address(endereco)
+        except ValueError:
+            endereco = "10.42.0.1"
+        nome = getattr(self.rede, "nome_rede", lambda _: None)(interface) or SSID
+        with self.lock:
+            self.host_rede = endereco
+            self.ssid = nome[:64]
+
     def iniciar(self, dados):
         modo = dados.get("modo", "ensaio")
         if modo not in ("ensaio", "real"):
@@ -352,6 +454,7 @@ class Controle:
             interface = dados.get("interface", "")
             self.rede.verificar(interface)
             anterior = self.rede.anterior(interface)
+            self.definir_rede(interface)
         self.comparacao.encerrar()
         with self.lock:
             self.modo = modo

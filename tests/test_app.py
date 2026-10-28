@@ -13,7 +13,7 @@ from unittest.mock import Mock, patch
 from urllib.parse import urlencode
 
 from app import ServidorApp
-from controle import Controle, ErroOperacao, Rede
+from controle import Controle, ErroOperacao, Rede, RedeMac
 from servidor import Handler
 
 
@@ -361,6 +361,70 @@ class TestComandos(unittest.TestCase):
             with self.assertRaisesRegex(ErroOperacao, 'precisa de Linux'):
                 operacao(Rede())
         run.assert_not_called()
+
+
+
+IFCONFIG_MAC = """lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
+\tinet 127.0.0.1 netmask 0xff000000
+en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+\tinet 192.168.1.90 netmask 0xffffff00 broadcast 192.168.1.255
+bridge0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+bridge100: flags=8a63<UP,BROADCAST,SMART,RUNNING,ALLMULTI,SIMPLEX,MULTICAST> mtu 1500
+\tinet 192.168.2.1 netmask 0xffffff00 broadcast 192.168.2.255
+"""
+ARP_MAC = """? (192.168.2.1) at 6a:5e:dd:73:bf:64 on bridge100 ifscope permanent [bridge]
+? (192.168.2.3) at 1a:2b:3c:4d:5e:6f on bridge100 ifscope [bridge]
+? (192.168.2.4) at (incomplete) on bridge100 ifscope [bridge]
+? (192.168.2.255) at ff:ff:ff:ff:ff:ff on bridge100 ifscope [bridge]
+? (224.0.0.251) at 1:0:5e:0:0:fb on bridge100 ifscope permanent [ethernet]
+"""
+NAT_MAC = """{
+    AirPort =     {
+        Enabled = 1;
+        NetworkName = "MacBook Air de Eduardo";
+    };
+    Enabled = 1;
+}"""
+
+
+class TestRedeMac(unittest.TestCase):
+    def rede(self, respostas):
+        rede = RedeMac()
+        rede.executar = lambda argumentos, autorizar=False: respostas[argumentos[0]]
+        return rede
+
+    def test_usa_so_a_rede_do_compartilhamento(self):
+        rede = self.rede({'ifconfig': IFCONFIG_MAC})
+        self.assertEqual(rede.interfaces(), ['bridge100'])
+        self.assertEqual(rede.endereco('bridge100'), '192.168.2.1')
+        with self.assertRaisesRegex(ErroOperacao, 'Compartilhamento de Internet'):
+            rede.verificar('en0')
+
+    def test_sem_compartilhamento_explica_como_ligar(self):
+        rede = self.rede({'ifconfig': IFCONFIG_MAC.split('bridge100')[0]})
+        self.assertEqual(rede.interfaces(), [])
+        with self.assertRaisesRegex(ErroOperacao, 'Ajustes do Sistema'):
+            rede.verificar('')
+
+    def test_vizinhos_ignoram_o_proprio_mac_e_enderecos_de_grupo(self):
+        rede = self.rede({'ifconfig': IFCONFIG_MAC, 'arp': ARP_MAC})
+        self.assertEqual(rede.vizinhos('bridge100'), [
+            {'ip': '192.168.2.3', 'mac': '1a:2b:3c:4d:5e:6f', 'estado': 'OBSERVADO'},
+            {'ip': '192.168.2.4', 'mac': '—', 'estado': 'INCOMPLETO'}])
+
+    def test_nome_da_rede_e_sessao_real_sem_alterar_o_sistema(self):
+        rede = self.rede({'ifconfig': IFCONFIG_MAC, 'arp': ARP_MAC, 'defaults': NAT_MAC})
+        self.assertEqual(rede.nome_rede('bridge100'), 'MacBook Air de Eduardo')
+        with tempfile.TemporaryDirectory() as pasta, \
+                patch('controle.ThreadingHTTPServer') as servidor, patch('controle.shutil.which', return_value='/usr/sbin/arp'):
+            servidor.return_value.serve_forever = lambda: None
+            controle = Controle(pasta, rede)
+            controle.iniciar({'modo': 'real', 'interface': 'bridge100', 'confirmar': True})
+            estado = controle.estado()
+            self.assertEqual((estado['ssid'], estado['url'], estado['plataforma']),
+                             ('MacBook Air de Eduardo', 'http://192.168.2.1:8080', 'macos'))
+            controle.encerrar()
+            self.assertFalse(controle.estado()['limpeza_pendente'])
 
 
 if __name__ == '__main__':

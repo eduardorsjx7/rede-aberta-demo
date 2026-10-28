@@ -167,6 +167,11 @@ function renderizarTelao() {
     $('corpo-telao').innerHTML = ETAPAS[e.etapa].corpo;
     $('corpo-telao').dataset.etapa = e.etapa;
   }
+  // Nome da rede e endereço reais (no macOS vêm do Compartilhamento de Internet).
+  const nomeRede = $('corpo-telao').querySelector('.nome-rede');
+  if (nomeRede && e.ssid && nomeRede.textContent !== e.ssid) nomeRede.textContent = e.ssid;
+  const endereco = $('corpo-telao').querySelector('.endereco');
+  if (endereco && e.url && endereco.firstChild?.nodeType === Node.TEXT_NODE && endereco.firstChild.nodeValue !== e.url) endereco.firstChild.nodeValue = e.url;
   $('totais-telao').textContent = `${e.observados} ${e.observados === 1 ? 'vizinho observado' : 'vizinhos observados'} · ${e.envios} ${e.envios === 1 ? 'envio' : 'envios'}`;
   $('dados-telao').hidden = !e.revelado || e.comparacao.telao;
   renderizarComparacao();
@@ -290,7 +295,10 @@ async function iniciarInterface() {
     });
     $('iniciar').onclick = async () => {
       const real = $('modo').value === 'real';
-      if (real && !await confirmar('Iniciar a rede da atividade?', 'A conexão Wi-Fi deste adaptador será substituída pelo ponto de acesso sem senha. Se houver internet em outra interface, ela poderá ser compartilhada. Avise o público sobre os dados observáveis antes de convidá-lo a conectar.')) return;
+      const aviso = estado?.plataforma === 'macos'
+        ? `A página de participação vai abrir na rede do Compartilhamento de Internet (“${estado.ssid}”), em ${estado.url}. O app não muda ajustes do Mac. Avise o público sobre os dados observáveis antes de convidá-lo a conectar.`
+        : 'A conexão Wi-Fi deste adaptador será substituída pelo ponto de acesso sem senha. Se houver internet em outra interface, ela poderá ser compartilhada. Avise o público sobre os dados observáveis antes de convidá-lo a conectar.';
+      if (real && !await confirmar('Iniciar a rede da atividade?', aviso)) return;
       await acao('iniciar', {modo: $('modo').value, interface: $('interface').value, confirmar: real});
     };
     $('abrir-telao').onclick = () => {

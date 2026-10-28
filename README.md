@@ -45,9 +45,9 @@ bash abrir_app.sh
 
 Depois da instalação, abra **Rede aberta** pelo menu de aplicativos ou pelo atalho na área de trabalho. A comparação HTTP/HTTPS pelo notebook funciona sem criar uma rede Wi-Fi. Para conectar celulares, confira os requisitos de NetworkManager e adaptador AP abaixo.
 
-### No macOS (ensaio e comparação)
+### No macOS
 
-No Mac funcionam o painel, o **Ensaio com dados fictícios**, o telão e a comparação HTTP × HTTPS pelo notebook. A **Demonstração real** (rede Wi-Fi aberta para os celulares) precisa de Linux com NetworkManager; no Mac, **Verificar equipamento** explica isso em vez de tentar mexer na rede.
+No Mac funcionam o painel, o ensaio, a apresentação, a comparação HTTP × HTTPS e também a **Demonstração real**. Nela o Mac vira o ponto de acesso pelo **Compartilhamento de Internet**, que a equipe liga nos Ajustes; o app não muda ajustes do sistema e só usa essa rede (interface `bridge100`), para observar apenas os aparelhos que entraram na rede da demonstração.
 
 ```bash
 cd rede-aberta-demo
@@ -55,7 +55,19 @@ python3 instalar_atalho.py
 bash abrir_app.sh
 ```
 
-O instalador cria **Rede Aberta.command** na pasta do projeto e na Mesa: dê dois cliques para abrir o painel no navegador. Se o macOS bloquear na primeira vez, clique com o botão direito no arquivo, escolha **Abrir** e confirme. Para rodar os testes: `python3 -m unittest discover -s tests -v`.
+O instalador cria **Rede Aberta.command** na pasta do projeto e na Mesa: dê dois cliques para abrir o painel. Se o macOS bloquear na primeira vez, clique com o botão direito, escolha **Abrir** e confirme.
+
+**Antes da demonstração real no Mac:**
+
+1. Abra **Ajustes do Sistema › Geral › Compartilhamento** e clique no **ⓘ** ao lado de **Compartilhamento de Internet**.
+2. Em **Compartilhar a conexão de**, escolha uma fonte que não seja o Wi-Fi: iPhone por USB, adaptador Ethernet ou Ponte Thunderbolt. A demonstração funciona mesmo sem internet nessa fonte.
+3. Em **Para aparelhos usando**, marque **Wi-Fi**. Em **Opções de Wi-Fi**, defina o nome da rede (por exemplo, `EXTENSAO-REDE-ABERTA`) e, se o macOS oferecer, a segurança **Nenhuma**; se não oferecer, use uma senha simples e mostre-a ao público.
+4. Ligue o **Compartilhamento de Internet**. O Mac sai da rede Wi-Fi em que estava enquanto ele estiver ligado.
+5. No painel, escolha **Demonstração real**, clique em **Verificar equipamento** e depois em **Iniciar demonstração real**. O nome da rede e o endereço da página (por exemplo, `http://192.168.2.1:8080`) aparecem sozinhos na apresentação.
+6. Na primeira vez, o macOS pode perguntar se o Python pode aceitar conexões de entrada: clique em **Permitir**, senão os celulares não abrem a página.
+7. Ao terminar, clique em **Encerrar dinâmica** e desligue o Compartilhamento de Internet.
+
+Para rodar os testes: `python3 -m unittest discover -s tests -v`.
 
 ## Usar o aplicativo por botões
 
