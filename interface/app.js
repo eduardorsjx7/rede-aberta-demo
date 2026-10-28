@@ -328,3 +328,17 @@ async function iniciarInterface() {
   proximaConsulta = setTimeout(acompanhar, 1000);
 }
 iniciarInterface();
+
+// No painel, as setas do teclado passam os slides da apresentação sem precisar clicar nela antes.
+if (!telao && $('palestrante')) {
+  const TECLAS = ['ArrowRight', 'ArrowLeft', 'PageDown', 'PageUp', 'Home', 'End'];
+  document.addEventListener('keydown', (e) => {
+    if (e.target.closest('input, select, textarea, dialog') || (e.target.closest('button') && e.key === ' ')) return;
+    if (!TECLAS.includes(e.key) && e.key.toLowerCase() !== 'r') return;
+    try {
+      $('palestrante').contentDocument.dispatchEvent(new KeyboardEvent('keydown', {key: e.key, shiftKey: e.shiftKey}));
+      e.preventDefault();
+    } catch (_) { /* apresentação ainda carregando */ }
+  });
+}
+

@@ -9,10 +9,11 @@
 @media(max-width:1050px){.painel{gap:24px;padding-inline:24px;grid-template-columns:255px minmax(0,1fr)}.roteiro{padding:24px}.contadores{gap:18px}.contadores p{display:none}.privacidade{align-items:flex-start;flex-direction:column}.navegacao span{display:none}}@media(max-width:720px){.cabecalho{padding:0 20px;height:80px}.marca{font-size:20px;gap:9px}.marca small{font-size:11px}.cabecalho-acoes{gap:8px}.cabecalho-acoes button{font-size:12px;padding:9px}.badge{padding:6px 8px;font-size:11px}.painel{display:flex;flex-direction:column;padding:25px 20px}.operacao h1{font-size:25px}.simulacao button{width:auto;margin-right:8px}.status-lista{margin-bottom:15px}.roteiro{padding:21px 18px}.previa h3{font-size:26px}.numero-etapa{font-size:44px}.rodape-sessao{align-items:flex-start}.titulo-secao{gap:8px}.titulo-secao h2{font-size:16px}.titulo-secao>span{white-space:nowrap}}@media(prefers-reduced-motion:no-preference){button{transition:background .12s,border-color .12s}}:fullscreen .barra-telao{display:none}:fullscreen .viewport{top:0}
 .dados-colunas td span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;max-height:2.6em}
 .laboratorio{margin-top:32px;border-top:2px solid var(--azul);padding:25px 0}.laboratorio>p{font-size:14px;line-height:1.7;max-width:75ch}.laboratorio label{display:block;font-size:14px;margin:22px 0 8px}.laboratorio input{font:inherit;border:1px solid #bdcce1;border-radius:6px;padding:12px;width:100%;max-width:420px;color:var(--texto);background:#fff}.laboratorio input:focus-visible{outline:3px solid #007f98;outline-offset:3px}.botoes-comparacao{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.botoes-comparacao button{font-size:13px}.enderecos-comparacao{background:#e4edff;padding:12px 20px;border-radius:12px;margin:20px 0}.enderecos-comparacao p{font-size:14px;overflow-wrap:anywhere}.enderecos-comparacao a{color:var(--azul)}.enderecos-comparacao code{font-size:12px;overflow-wrap:anywhere}.quadros-comparacao{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}.quadro-protocolo{padding:20px;background:#fff;border:1px solid var(--linha);border-radius:12px;min-width:0}.quadro-protocolo h3{font-size:22px;margin:0 0 12px;color:var(--azul)}.quadro-protocolo p{font-size:13px;line-height:1.6;overflow-wrap:anywhere}.quadro-protocolo pre{background:#edf2fa;padding:12px;white-space:pre-wrap;word-break:break-all;font-size:12px;line-height:1.6;max-height:160px;overflow:auto}.quadro-protocolo .veredito{font-weight:700;color:var(--profundo)}.quadro-protocolo .recebido{border-top:1px solid var(--linha);padding-top:12px}.comparacao-intro{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:50px 0}.comparacao-intro>div{padding:34px;background:#e4edff;border-radius:20px}.comparacao-intro h2{font-size:54px;margin:0 0 24px;color:var(--azul)}.comparacao-intro p{font-size:34px;line-height:1.5;margin:0}.comparacao-telao{position:absolute;top:155px;bottom:108px;left:75px;right:75px;background:#fff;border:3px solid var(--azul);border-radius:20px;padding:30px 40px}.metodo-comparacao{font-size:25px;color:var(--muted);margin:14px 0}.comparacao-telao .quadros-comparacao{gap:30px;margin:25px 0}.comparacao-telao .quadro-protocolo{padding:26px;background:#f0f5ff;border:none}.comparacao-telao .quadro-protocolo h3{font-size:44px}.comparacao-telao .quadro-protocolo p{font-size:25px;line-height:1.4;margin:16px 0}.comparacao-telao .quadro-protocolo pre{font-size:20px;line-height:1.5;height:160px;max-height:160px;overflow:hidden}.comparacao-telao .recebido{max-height:120px;overflow:hidden}.conclusao-comparacao{font-size:25px;line-height:1.5;margin:12px 0}.laboratorio details{font-size:13px;line-height:1.6}.comparacao-telao .dados-titulo span{white-space:nowrap}@media(max-width:720px){.laboratorio .titulo-secao{align-items:flex-start;flex-direction:column}.laboratorio .quadros-comparacao{grid-template-columns:1fr}}
-/* Apresentação dentro do painel: slide, roteiro de fala e relógio na mesma tela dos controles */
-.apresentacao-equipe{background:#fff;border:1px solid var(--linha);border-radius:18px;padding:22px 24px 24px;margin-bottom:24px}
-.apresentacao-equipe .titulo-secao{margin-bottom:14px}
-.apresentacao-equipe iframe{display:block;width:100%;aspect-ratio:16/9.4;min-height:460px;border:0;border-radius:12px;background:#14254d}
+/* Apresentação no painel: faixa na largura toda, acima dos controles, com slide, roteiro de fala e relógio */
+.apresentacao-faixa{max-width:1450px;margin:auto;padding:26px 4vw 0}
+.apresentacao-equipe{background:#fff;border:1px solid var(--linha);border-radius:18px;padding:18px 20px 20px}
+.apresentacao-equipe .titulo-secao{margin-bottom:12px}
+.apresentacao-equipe iframe{display:block;width:100%;height:clamp(520px,72vh,820px);border:0;border-radius:12px;background:#14254d}
 
 /* Telão — identidade visual do deck "Inclusão Digital e Segurança da Informação" (Unit).
    Palco 1920 × 1080; carrega depois de estilo.css e só sobrescreve o que é do telão. */
@@ -145,17 +146,43 @@ html,body{height:100%;background:#14254d}body{margin:0}
 :root{--barra:48px}
 html.embutido{--barra:0px}
 html.embutido .barra-telao{display:none}
-/* Dentro do painel o espaço é menor: roteiro mais compacto, com os botões sempre à vista */
-html.embutido .painel-palestrante{gap:10px;padding:14px 16px;width:min(42vw,560px)}
-html.embutido.palestrante .telao .viewport{right:min(42vw,560px)}
-html.embutido .relogio{padding:10px 12px;gap:6px 10px}
-html.embutido #decorrido{font-size:30px}
-html.embutido .agora-p h2{font-size:19px;margin:2px 0}
-html.embutido .roteiro-p{font-size:15px}
-html.embutido .roteiro-p .fale{font-size:17px}
-html.embutido .roteiro-p p{margin-bottom:10px}
-html.embutido .proximo-p{padding-top:8px}
-html.embutido .nav-p button{padding:9px}
+/* Dentro do painel da equipe: barra fixa com navegação, slide atual e relógio; slide à esquerda e roteiro em letra grande à direita */
+html.embutido{--topo-p:76px}
+.barra-palestrante{display:none}
+html.embutido .barra-palestrante{position:fixed;top:0;left:0;right:0;z-index:11;height:var(--topo-p);display:flex;align-items:center;gap:14px;padding:0 16px;background:#0b1733;border-bottom:3px solid #f2b632;color:#fff;font-family:"Montserrat","Trebuchet MS","Liberation Sans",sans-serif}
+.barra-palestrante .nav-barra{display:flex;gap:8px;flex:none}
+.barra-palestrante button{padding:12px 20px;border:1px solid #48638b;border-radius:10px;background:transparent;color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer;white-space:nowrap}
+.barra-palestrante button:hover:not(:disabled){background:#24376a}
+.barra-palestrante button:disabled{opacity:.4;cursor:default}
+.barra-palestrante button:focus-visible{outline:3px solid #f2b632;outline-offset:2px}
+.barra-palestrante #p-prox{background:#f2b632;border-color:#f2b632;color:#14254d}
+.barra-palestrante #p-prox:hover:not(:disabled){background:#ffc94d}
+.barra-palestrante #agora-rotulo{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;letter-spacing:1.2px;color:#fff}
+.barra-palestrante .relogio{display:flex;align-items:center;gap:12px;padding:0;background:none;border-radius:0;flex:none}
+.barra-palestrante .relogio>div:first-child{display:flex;align-items:baseline;gap:8px}
+.barra-palestrante .relogio .rotulo-p{display:none}
+.barra-palestrante #decorrido{font-size:30px}
+.barra-palestrante #meta-tempo{font-size:13px}
+.barra-palestrante .acoes-p{display:flex;gap:6px}
+.barra-palestrante .acoes-p button{padding:8px 12px;font-size:14px}
+html.embutido.palestrante .telao .viewport{top:var(--topo-p);right:44%;bottom:0}
+html.embutido.palestrante .telao-vivo{top:var(--topo-p);height:calc(100% - var(--topo-p));width:56%}
+html.embutido .painel-palestrante{top:var(--topo-p);width:44%;padding:20px 24px;gap:16px}
+html.embutido .agora-p h2{font-size:27px;margin:4px 0}
+html.embutido #agora-tempo{font-size:15px}
+html.embutido .roteiro-p{font-size:18px;line-height:1.6}
+html.embutido .roteiro-p .fale{font-size:23px;line-height:1.6}
+html.embutido .roteiro-p .pergunte{font-size:20px}
+html.embutido .roteiro-p .dica{font-size:16px}
+html.embutido .proximo-p strong{font-size:18px}
+@media (max-width:760px){
+  html.embutido{--topo-p:118px}
+  html.embutido .barra-palestrante{flex-wrap:wrap;align-content:center;gap:8px;padding:8px 10px}
+  .barra-palestrante #agora-rotulo{order:3;flex-basis:100%}
+  html.embutido.palestrante .telao .viewport{right:0;bottom:56%}
+  html.embutido.palestrante .telao-vivo{width:100%;height:calc(44% - var(--topo-p))}
+  html.embutido .painel-palestrante{top:44%;width:auto}
+}
 .telao .barra-telao{gap:12px;height:calc(var(--barra) + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
 .telao .viewport{top:calc(var(--barra) + env(safe-area-inset-top,0px));bottom:env(safe-area-inset-bottom,0px);left:env(safe-area-inset-left,0px);right:env(safe-area-inset-right,0px)}
 .barra-telao button{white-space:nowrap}
@@ -344,8 +371,7 @@ html.palestrante .notas-painel,html.palestrante .gire{display:none!important}
 .telao-vivo{position:absolute;top:calc(var(--barra) + env(safe-area-inset-top,0px));left:0;right:0;bottom:0;width:100%;height:calc(100% - var(--barra) - env(safe-area-inset-top,0px));border:0;background:#14254d;pointer-events:none}
 html.ao-vivo .telao .viewport{visibility:hidden}
 html.palestrante .telao-vivo{width:calc(100% - min(40vw,620px))}
-html.embutido.palestrante .telao-vivo{width:calc(100% - min(42vw,560px))}
-@media (max-width:760px){html.palestrante .telao-vivo,html.embutido.palestrante .telao-vivo{width:100%;height:44%}}
+@media (max-width:760px){html.palestrante:not(.embutido) .telao-vivo{width:100%;height:44%}}
 /* ---- Conteúdo centralizado: a área entre o cabeçalho e o rodapé é um bloco flex, e o corpo ocupa o centro dela ---- */
 .telao .slide{position:absolute;top:196px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:stretch;text-align:left}
 .telao .topo-slide{justify-content:flex-start}
@@ -921,6 +947,17 @@ window.addEventListener('DOMContentLoaded', () => {
     receber(e.data);
   });
   if (canal) canal.onmessage = (e) => receber(e.data);
+  // No painel da equipe, navegação, slide atual e relógio ficam numa barra fixa no topo.
+  if (document.documentElement.classList.contains('embutido')) {
+    const barra = document.createElement('div');
+    barra.className = 'barra-palestrante';
+    const nav = document.createElement('div');
+    nav.className = 'nav-barra';
+    nav.append($('p-ant'), $('p-prox'));
+    barra.append(nav, $('agora-rotulo'), document.querySelector('.relogio'));
+    $('painel-palestrante').before(barra);
+    document.querySelector('.nav-p')?.remove();
+  }
   setInterval(tique, 500);
   $('botao-palestrante').onclick = abrirPalestrante;
   $('relogio-btn').onclick = () => alternarRelogio();
