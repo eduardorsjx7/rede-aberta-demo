@@ -221,10 +221,10 @@ html,body{height:100%;background:#14254d}body{margin:0}
 .gire{display:none;position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-size:14px;line-height:1.4;color:#c9d3e8;pointer-events:none}
 @media (orientation:portrait) and (max-width:760px){.gire{display:block}}
 /* ---- Conteúdo centralizado: a área entre o cabeçalho e o rodapé é um bloco flex, e o corpo ocupa o centro dela ---- */
-.telao .slide{position:absolute;top:178px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:center;text-align:center}
-.telao .topo-slide{justify-content:center}
-.telao .slide h1{margin:18px auto 0;max-width:30ch}
-#corpo-telao{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}
+.telao .slide{position:absolute;top:178px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:stretch;text-align:left}
+.telao .topo-slide{justify-content:flex-start}
+.telao .slide h1{margin:18px 0 0;max-width:30ch;text-align:left}
+#corpo-telao{flex:1;min-height:0;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}
 #corpo-telao>*{width:100%;margin-top:0;margin-bottom:0}
 #corpo-telao>.slide-lead,#corpo-telao>.pergunta{max-width:46ch;margin-left:auto;margin-right:auto}
 #corpo-telao>.slide-aviso{width:auto;max-width:1500px;text-align:left}
