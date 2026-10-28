@@ -10,7 +10,7 @@
 | `servidor.py` | Página de participação (`http://10.42.0.1:8080`) |
 | `comparacao.py` | Laboratório HTTP × HTTPS |
 | `interface/` | Painel (`index.html`, `app.js`, `estilo.css`), **telão** (`telao.html`, `telao.css`) e textos das etapas (`conteudo.js`) |
-| `docs/` | Contexto do projeto, roteiro de fala, guia de slides e `previa_telao.html` |
+| `docs/` | Contexto do projeto, roteiro de fala, guia de slides, `previa_telao.html` e `apresentacao_completa.html` |
 | `ver_telao.py` | Abre só a prévia do telão no navegador, sem rodar o app |
 | `tests/` | Testes automatizados e verificação da interface |
 | `iniciar.sh`, `clientes.sh`, `abrir_app.sh`, `instalar_atalho.py` | Scripts de linha de comando e atalho do app |
@@ -19,6 +19,10 @@
 Este projeto cria um ponto de acesso **sem senha** para uma atividade presencial e oferece uma página educativa em `http://10.42.0.1:8080`. A página só grava dados depois que a pessoa marca a caixa de concordância e envia o formulário: horário, IP, identificação do navegador e apelido opcional. O comando `clientes.sh` mostra os endereços IP e MAC presentes na tabela de vizinhos do sistema; essa consulta não grava arquivo.
 
 Para conduzir a fala, os cliques e a participação do público, consulte o [roteiro de apresentação](docs/ROTEIRO_APRESENTACAO.md).
+
+## Apresentação completa da palestra
+
+Abra `docs/apresentacao_completa.html` com duplo clique. São 40 slides: abertura, informática básica, ferramentas digitais, internet consciente, senhas seguras, golpes virtuais (com a dinâmica “Verdadeiro ou golpe?”), dados pessoais e LGPD, a demonstração de Wi-Fi aberto e o encerramento com questionário. Setas ← → ou toque na tela mudam de slide, **N** mostra as notas do apresentador, **R** revela as respostas da dinâmica, **F** entra em tela cheia; nas etapas da demonstração, **D** e **C** funcionam como na prévia. O arquivo é independente (estilos, textos das etapas e imagens embutidos); se mudar `interface/conteudo.js` ou `interface/telao.css`, gere-o de novo.
 
 ## Ver só o telão (sem rodar o app)
 
