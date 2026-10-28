@@ -290,6 +290,39 @@ html,body{height:100%;background:#14254d}body{margin:0}
 .sem-marca #corpo-telao{flex:0 1 auto;margin:48px 0 auto}
 /* Abertura: sem o nome da seção acima do título */
 .abertura .topo-slide{display:none}
+/* Modo palestrante: o slide fica à esquerda e o roteiro, o relógio e o próximo slide à direita */
+.notas-painel p{margin:6px 0}
+.notas-painel .fale{color:#fff;font-size:17px}
+.notas-painel .tempo-sug{color:#f2b632;font-weight:700}
+.painel-palestrante{position:fixed;top:calc(var(--barra) + env(safe-area-inset-top,0px));right:0;bottom:0;width:min(40vw,620px);z-index:9;display:flex;flex-direction:column;gap:16px;overflow:auto;padding:20px max(20px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) 22px;background:#0b1733;color:#e6ecf8;border-left:3px solid #f2b632;font-family:"Montserrat","Trebuchet MS","Liberation Sans",sans-serif}
+html.palestrante .telao .viewport{right:min(40vw,620px)}
+html.palestrante .notas-painel,html.palestrante .gire{display:none!important}
+.painel-palestrante button{padding:8px 14px;border:1px solid #48638b;border-radius:8px;background:transparent;color:#fff;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.painel-palestrante button:hover{background:#24376a}
+.painel-palestrante button:focus-visible{outline:3px solid #f2b632;outline-offset:2px}
+.rotulo-p{display:block;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#f2b632}
+.relogio{display:grid;grid-template-columns:1fr auto;gap:10px 16px;align-items:center;padding:16px 18px;border-radius:14px;background:#14254d}
+#decorrido{display:block;font-size:46px;font-weight:800;line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+#meta-tempo{font-size:14px;color:#c9d3e8;font-variant-numeric:tabular-nums}
+.ritmo{justify-self:end;padding:6px 12px;border-radius:20px;background:#24376a;font-size:14px;font-weight:700;text-align:center}
+.ritmo.ok{background:#1e6755}.ritmo.atrasado{background:#a3242f}.ritmo.adiantado{background:#2453a6}
+.acoes-p{grid-column:1/-1;display:flex;gap:8px}
+.agora-p h2{margin:6px 0 4px;font-size:24px;line-height:1.2;color:#fff;text-wrap:balance}
+#agora-tempo{font-size:14px;color:#c9d3e8;font-variant-numeric:tabular-nums}
+.roteiro-p{flex:1;min-height:120px;overflow:auto;font-size:18px;line-height:1.55}
+.roteiro-p p{margin:0 0 16px}
+.roteiro-p b{display:block;margin-bottom:4px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#f2b632}
+.roteiro-p .fale{font-size:21px;color:#fff}
+.roteiro-p .pergunte{padding:10px 14px;border-left:4px solid #f2b632;border-radius:6px;background:#14254d;color:#fff}
+.roteiro-p .dica{font-size:16px;color:#c9d3e8}
+.proximo-p{padding-top:12px;border-top:1px solid #24376a}
+.proximo-p strong{font-size:17px;color:#fff}
+.nav-p{display:flex;gap:8px}.nav-p button{flex:1;padding:12px}
+@media (max-width:760px){
+  html.palestrante .telao .viewport{right:env(safe-area-inset-right,0px);bottom:56%}
+  .painel-palestrante{top:44%;left:0;width:auto;border-left:0;border-top:3px solid #f2b632;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  #decorrido{font-size:34px}
+}
 /* ---- Conteúdo centralizado: a área entre o cabeçalho e o rodapé é um bloco flex, e o corpo ocupa o centro dela ---- */
 .telao .slide{position:absolute;top:196px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:stretch;text-align:left}
 .telao .topo-slide{justify-content:flex-start}
@@ -358,10 +391,11 @@ html,body{height:100%;background:#14254d}body{margin:0}
 
 <div class="telao">
   <div class="barra-telao">
-    <span class="dica" id="conexao-telao" role="status">← → navegar · N notas · F tela cheia</span>
+    <span class="dica" id="conexao-telao" role="status">← → navegar · P palestrante · N notas · F tela cheia</span>
     <div class="acoes">
       <button id="anterior" type="button" aria-label="Slide anterior">‹<span class="texto-btn"> Anterior</span></button>
       <button id="proximo" type="button" aria-label="Próximo slide"><span class="texto-btn">Próximo </span>›</button>
+      <button id="botao-palestrante" type="button" aria-pressed="false">Palestrante</button>
       <button id="botao-notas" type="button" aria-pressed="false">Notas</button>
       <button id="tela-cheia" type="button">Tela cheia</button>
     </div>
@@ -378,6 +412,13 @@ html,body{height:100%;background:#14254d}body{margin:0}
   </main>
   <p class="gire">Gire o celular para ver os slides maiores.</p>
   <aside id="notas" class="notas-painel" hidden></aside>
+  <aside id="painel-palestrante" class="painel-palestrante" hidden aria-label="Modo palestrante">
+    <div class="relogio"><div><span class="rotulo-p">Tempo de palestra</span><strong id="decorrido">00:00</strong><span id="meta-tempo">de 45:00</span></div><span id="ritmo" class="ritmo">Aperte Iniciar</span><div class="acoes-p"><button id="relogio-btn" type="button">Iniciar</button><button id="zerar-btn" type="button">Zerar</button></div></div>
+    <div class="agora-p"><span class="rotulo-p" id="agora-rotulo"></span><h2 id="agora-titulo"></h2><span id="agora-tempo"></span></div>
+    <div id="roteiro" class="roteiro-p"></div>
+    <div class="proximo-p"><span class="rotulo-p">Próximo</span><strong id="proximo-titulo"></strong></div>
+    <div class="nav-p"><button id="p-ant" type="button">‹ Anterior</button><button id="p-prox" type="button">Próximo ›</button></div>
+  </aside>
 </div>
 
 <script>
@@ -542,6 +583,120 @@ SLIDES.push(
     n: 'Abra para perguntas. Ofereça ajuda para ativar o bloqueio de tela e a confirmação em duas etapas do WhatsApp. Lembre de encerrar a rede de teste.' }
 );
 
+// Roteiro do palestrante: o que falar, o que perguntar e cuidados de cada slide, com o tempo sugerido (segundos).
+// A soma dá 45 minutos. A chave é o título do slide; capas, divisórias e etapas da demonstração têm chave própria.
+const NOTAS = {
+  capa: { tempo: 30,
+    fale: 'Boa noite, turma! Somos estudantes de Sistemas de Informação da Unit. Hoje vamos conversar sobre como usar o celular e a internet com mais segurança.',
+    dica: 'Agradeça à direção e à professora da turma. A palestra tem 45 minutos, uma demonstração ao vivo e um questionário rápido no final.' },
+  'Quem somos': { tempo: 30,
+    fale: 'Somos nove alunos, e o professor Kramer orienta o projeto. Cada um de nós vai falar uma parte.',
+    dica: 'Não faça rodada de apresentações: só diga os nomes para caber no tempo.' },
+  'Por que este tema?': { tempo: 60,
+    fale: 'Na visita à escola, vocês contaram que fazem quase tudo pelo celular, que já chegaram mensagens de golpe e que gov.br e banco às vezes complicam. É disso que vamos falar hoje.',
+    pergunte: 'Alguém aqui já recebeu uma mensagem estranha pedindo dinheiro?',
+    dica: 'Ouça um ou dois relatos curtos e agradeça. Não peça detalhes pessoais.' },
+  'Como você se sente na internet?': { tempo: 40,
+    fale: 'Antes de começar, pensem: de 1 a 5, quanto vocês se sentem seguros usando o celular e a internet? Marquem esse número na folha.',
+    dica: 'É a autoavaliação “antes”. No final vamos perguntar de novo. A meta do projeto é a nota média subir.' },
+  'O que vamos ver hoje': { tempo: 20,
+    fale: 'São oito partes, em 45 minutos. Dúvida rápida pode perguntar na hora; as maiores, a gente responde no final.' },
+
+  parte1: { tempo: 10, fale: 'Primeira parte: informática básica.' },
+  'Aparelho, aplicativo e internet': { tempo: 90,
+    fale: 'Três palavras que vamos usar muito. Aparelho é o que vocês seguram: celular, computador. Aplicativo é o programa de cada tarefa: WhatsApp, banco, câmera. E internet é o que liga tudo. Pensem numa casa: o aparelho é a casa, os aplicativos são os cômodos e a internet é a rua.',
+    pergunte: 'Quem aqui usa Wi-Fi em casa? E quem usa só os dados do chip?' },
+  'Cuidados básicos com o celular': { tempo: 120,
+    fale: 'Quatro cuidados simples. Bloqueie a tela com senha, digital ou padrão. Quando o celular pedir para atualizar, aceite: a atualização corrige falhas. Instale aplicativos só pela Play Store ou App Store. E ative o backup para não perder fotos e contatos.',
+    dica: 'Se der tempo, mostre no seu celular onde fica o bloqueio de tela (Configurações › Segurança). Diga que a equipe ajuda no final.' },
+
+  parte2: { tempo: 10, fale: 'Segunda parte: as ferramentas do dia a dia.' },
+  'Três ferramentas do dia a dia': { tempo: 120,
+    fale: 'O e-mail é como um endereço na internet e serve para recuperar outras senhas, então guardem bem a senha dele. No WhatsApp dá para mandar áudio, foto e documento, mas cuidado com links de desconhecidos. E o gov.br é uma conta só para INSS, CNH e Carteira de Trabalho.',
+    pergunte: 'Quem tem e-mail? E quem lembra a senha dele?' },
+  'Conta gov.br': { tempo: 100,
+    fale: 'A conta gov.br tem níveis: bronze, prata e ouro. Quanto mais alto o nível, mais serviços vocês conseguem usar. E guardem isto: o governo não pede senha por mensagem nem por telefone.',
+    dica: 'As regras de cada nível podem mudar. Reforce que a senha do gov.br é tão importante quanto a do banco.' },
+
+  parte3: { tempo: 10, fale: 'Terceira parte: como usar a internet com consciência.' },
+  'Antes de compartilhar, confira': { tempo: 160,
+    fale: 'Antes de repassar uma notícia, quatro passos. Primeiro, pare: notícia que dá medo ou pressa pede calma. Segundo, veja quem publicou. Terceiro, confira a data e veja se outros sites falam disso. E na dúvida, não repasse.',
+    pergunte: 'Já chegou no grupo da família alguma notícia que depois era mentira?',
+    dica: 'Exemplo que a escola relatou: “o banco vai fechar contas amanhã”, mandado com pressa. Lembre que ofender na internet também é crime (Marco Civil da Internet).' },
+
+  parte4: { tempo: 10, fale: 'Quarta parte: senhas seguras.' },
+  'Como criar uma senha forte': { tempo: 150,
+    fale: 'Senhas como 123456 ou a data de nascimento são as primeiras que o golpista tenta. O melhor é uma frase longa que só você conhece, e uma senha diferente para banco, e-mail e WhatsApp. Esta da tela é só um exemplo: não usem.',
+    pergunte: 'Cada um pense agora numa frase só sua. Não falem em voz alta!',
+    dica: 'Lembre de não anotar a senha na capinha do celular.' },
+  'Verificação em duas etapas': { tempo: 140,
+    fale: 'A verificação em duas etapas é um PIN extra além da senha. Mesmo que descubram sua senha, sem o PIN não entram. No WhatsApp fica em Configurações, Conta, Confirmação em duas etapas. E o mais importante: o código que chega por SMS é segredo. Ninguém de verdade pede esse código.',
+    dica: 'Golpe comum: “sou do WhatsApp, vou mandar um código, me fala”. Com o código, o golpista pega a conta e pede dinheiro aos contatos. Ofereça ajuda para ativar depois da palestra.' },
+
+  parte5: { tempo: 10, fale: 'Quinta parte: os golpes virtuais. Essa é a parte mais importante.' },
+  'Os golpes mais comuns': { tempo: 120,
+    fale: 'Os quatro golpes que mais aparecem. O falso parente, que diz que trocou de número e logo pede Pix. O falso Pix, com comprovante falso. O prêmio fácil, que pede só um clique ou o frete. E a falsa central do banco, que liga pedindo senha ou transferência.',
+    pergunte: 'Algum desses já chegou para vocês?',
+    dica: 'Banco nunca liga pedindo senha nem transferência para “conta segura”.' },
+  'Verdadeiro ou golpe?': { tempo: 180,
+    fale: 'Agora é com vocês! Vou ler cada mensagem e vocês levantam a mão: é golpe ou é verdadeira?',
+    pergunte: 'Depois de revelar cada uma: o que entregou o golpe?',
+    dica: 'Leia uma mensagem por vez e aperte R (ou toque no cartão) para revelar. Na mensagem da escola, lembre: na dúvida, confirme pessoalmente.' },
+  'Sinais de alerta': { tempo: 90,
+    fale: 'Cinco sinais de alerta: pressa, pedido de dinheiro ou código, link estranho, coisa boa demais e conhecido com número novo. Viu um desses? Pare e confirme por outro caminho: ligue para o número antigo ou abra o aplicativo do banco por conta própria.',
+    dica: 'Repita a regra de ouro: desconfiou, pare. O golpista conta com a pressa.' },
+  'Caí em um golpe. E agora?': { tempo: 140,
+    fale: 'Se cair em golpe, aja rápido. Ligue para o banco pelo número do cartão; se foi Pix, peça o MED, que é o mecanismo de devolução. Troque as senhas, avise os contatos e registre um boletim de ocorrência com os prints. E não tenham vergonha: o golpista engana qualquer pessoa.',
+    dica: 'MED é o Mecanismo Especial de Devolução do Pix, pedido ao próprio banco. Quanto antes, maior a chance de recuperar.' },
+
+  parte6: { tempo: 10, fale: 'Sexta parte: dados pessoais e a LGPD.' },
+  'O que são dados pessoais?': { tempo: 120,
+    fale: 'Dado pessoal é tudo o que identifica você: nome, CPF, endereço, telefone, foto, localização. Alguns são sensíveis e têm proteção maior, como saúde, religião e a biometria, que é a digital e o rosto.',
+    pergunte: 'Quem já deu o CPF na farmácia para ganhar desconto?',
+    dica: 'Não é para deixar de dar o CPF, e sim para perguntar para que ele vai ser usado.' },
+  'A LGPD protege você': { tempo: 110,
+    fale: 'A LGPD é a lei que obriga empresas e governo a cuidar dos seus dados. Vocês têm o direito de saber quais dados uma empresa tem, corrigir o que estiver errado, pedir para apagar o que não for necessário e mudar de ideia sobre uma autorização.',
+    dica: 'Lei 13.709/2018. Quem fiscaliza é a ANPD. Não precisa decorar o número da lei.' },
+
+  parte7: { tempo: 10, fale: 'Agora a demonstração ao vivo: por que não confiar em Wi-Fi aberto.',
+    dica: 'Para a demonstração real, troque para o notebook Linux com o app e abra o telão no projetor. Volte para a apresentação no slide “Seis regras para levar para casa”.' },
+  etapa1: { tempo: 60, fale: 'Montamos uma rede Wi-Fi aberta, como as de praça e rodoviária. Vamos ver, na prática, o que acontece quando um celular entra nela. Participar é voluntário: quem preferir pode só acompanhar.' },
+  etapa2: { tempo: 90, fale: 'No celular, abram o Wi-Fi e procurem EXTENSAO-REDE-ABERTA. Não tem senha. Depois abram o navegador e digitem o endereço da tela. Se aparecer “sem internet”, está certo: continuem conectados.' },
+  etapa3: { tempo: 60, fale: 'Leiam o aviso da página. Quem quiser participar inventa um apelido, marca a caixa e toca em Participar. Nada de nome real nem senha.' },
+  etapa4: { tempo: 60, fale: 'Repararam? Só por entrar na rede, nosso notebook já vê o endereço do seu aparelho. Ao abrir a página, vê o tipo de celular. Mas só guardamos algo se você concordou.' },
+  etapa5: { tempo: 50, fale: 'Este é um exemplo do que fica guardado em cada envio: horário, endereço na rede, tipo de navegador e o apelido.' },
+  etapa6: { tempo: 90, fale: 'Agora o mais importante: o mesmo texto enviado sem cadeado aparece legível para quem está no meio do caminho. Com cadeado, chega embaralhado.' },
+  etapa7: { tempo: 60, fale: 'Então, três dicas: confiram o cadeado, desconfiem de Wi-Fi aberto e deixem senha e banco para uma rede segura ou para os dados do celular.',
+    pergunte: 'O que mais surpreendeu vocês?' },
+
+  'Seis regras para levar para casa': { tempo: 90,
+    fale: 'Para levar para casa, seis regras. Vou ler e vocês repetem a palavra-chave: cadeado, senha, pressa, código, confira e dados.',
+    dica: 'Se a demonstração foi no notebook Linux, volte para esta apresentação antes deste slide.' },
+  'Hora do questionário': { tempo: 180,
+    fale: 'Agora o questionário. Não é prova e não vale nota: serve para a gente saber se a palestra ajudou. E marquem de novo, de 1 a 5, como vocês se sentem agora.',
+    dica: 'Distribua o questionário e as canetas. Ajude quem tem dificuldade de leitura sem sugerir respostas. Metas: 70% ou mais de acertos, 70% ou mais identificando os golpes e nota média maior que no início.' },
+  'O projeto continua': { tempo: 30,
+    fale: 'O material fica com a escola, e o laboratório pode receber novas atividades. E o pedido que fazemos: contem o que aprenderam para três pessoas da família.' },
+  'Referências': { tempo: 0,
+    dica: 'Slide de apoio. Pode pular na palestra.' },
+  obrigado: { tempo: 0,
+    fale: 'Muito obrigado! Agora podem perguntar. E quem quiser, a gente ajuda a configurar o celular.',
+    dica: 'Ofereça ajuda para ativar o bloqueio de tela e a confirmação em duas etapas. Lembre de encerrar a rede de teste.' }
+};
+
+function chaveNota(sl, k) {
+  if (sl.k === 'capa') return k === 0 ? 'capa' : 'obrigado';
+  if (sl.k === 'secao') return 'parte' + sl.s;
+  if (sl.demo) return 'etapa' + (SLIDES.filter((x) => x.demo).indexOf(sl) + 1);
+  return sl.t;
+}
+SLIDES.forEach((sl, k) => {
+  const nota = NOTAS[chaveNota(sl, k)];
+  if (!nota) { console.warn('Slide sem roteiro:', chaveNota(sl, k)); return; }
+  // Nas etapas da demonstração, a nota técnica do app vira a dica do palestrante.
+  sl.nota = sl.demo ? { ...nota, dica: [nota.dica, sl.n].filter(Boolean).join(' ') } : nota;
+});
+
 window.addEventListener('DOMContentLoaded', () => {
   const $ = (id) => document.getElementById(id);
   const N = SLIDES.length;
@@ -588,15 +743,22 @@ window.addEventListener('DOMContentLoaded', () => {
       $('sub-marca').textContent = sl.demo ? 'Demonstração: por que não confiar em Wi-Fi aberto' : 'Palestra · Turma da EJA';
     }
     $('totais-telao').textContent = `${i + 1} / ${N}`;
-    $('notas').innerHTML = `<b>Notas do apresentador · ${i + 1} / ${N}</b>${sl.n || ''}${sl.demo ? ' <br><i>Teclas: D mostra a tabela de resultados, C mostra a comparação HTTP × HTTPS (dados fictícios).</i>' : ''}`;
+    $('notas').innerHTML = `<b>Notas do apresentador · ${i + 1} / ${N}${sl.nota?.tempo ? ` · <span class="tempo-sug">${minutos(sl.nota.tempo)}</span>` : ''}</b>${roteiroHTML(sl)}`;
     $('notas').hidden = !notas;
     $('anterior').disabled = i === 0;
     $('proximo').disabled = i === N - 1;
     esconderPaineis();
     animar(sl.k ? especial : $('corpo-telao'), !!sl.k);
     try { history.replaceState(null, '', '#' + (i + 1)); } catch (_) { /* hash opcional */ }
+    atualizarPalestrante();
   }
-  function ir(n) { const novo = Math.max(0, Math.min(N - 1, n)); if (novo !== i) { direcao = novo > i ? 1 : -1; i = novo; mostrar(); } }
+  function ir(n, remoto) {
+    const novo = Math.max(0, Math.min(N - 1, n));
+    if (novo === i) return;
+    direcao = novo > i ? 1 : -1; i = novo; mostrar();
+    if (modoPalestrante && !relogio.rodando && !relogio.acumulado && i > 0) alternarRelogio(true);
+    if (!remoto) avisar({ tipo: 'ir', i });
+  }
   function revelar(todos) {
     const msgs = [...document.querySelectorAll('#quiz .msg')];
     if (todos) { msgs.forEach((m) => m.classList.add('aberta')); return; }
@@ -619,15 +781,23 @@ window.addEventListener('DOMContentLoaded', () => {
     else if (e.key === 'End') ir(N - 1);
     else if (k === 'f') telaCheia();
     else if (k === 'n') alternarNotas();
-    else if (k === 'r' && SLIDES[i].quiz) revelar(e.shiftKey);
-    else if (k === 'd' && SLIDES[i].demo) { $('dados-telao').hidden = !$('dados-telao').hidden; $('comparacao-telao').hidden = true; }
-    else if (k === 'c' && SLIDES[i].demo) { $('comparacao-telao').hidden = !$('comparacao-telao').hidden; $('dados-telao').hidden = true; }
-    else return;
+    else if (k === 'p') abrirPalestrante();
+    else if (!acao(k, e.shiftKey)) return;
     e.preventDefault();
   });
+  // Ações que as duas janelas (público e palestrante) repetem uma da outra.
+  function acao(k, shift, remoto) {
+    if (k === 'r' && SLIDES[i].quiz) revelar(shift);
+    else if (k === 'd' && SLIDES[i].demo) { $('dados-telao').hidden = !$('dados-telao').hidden; $('comparacao-telao').hidden = true; }
+    else if (k === 'c' && SLIDES[i].demo) { $('comparacao-telao').hidden = !$('comparacao-telao').hidden; $('dados-telao').hidden = true; }
+    else if (k.startsWith('msg:')) { const m = document.querySelectorAll('#quiz .msg')[+k.slice(4)]; if (m) m.classList.toggle('aberta'); }
+    else return false;
+    if (!remoto) avisar({ tipo: 'tecla', k, shift });
+    return true;
+  }
   document.querySelector('.viewport').addEventListener('click', (e) => {
     const msg = e.target.closest('.msg');
-    if (msg) { msg.classList.toggle('aberta'); return; }
+    if (msg) { acao('msg:' + [...document.querySelectorAll('#quiz .msg')].indexOf(msg)); return; }
     if (e.target.closest('.interativo')) return;
     ir(e.clientX > innerWidth / 2 ? i + 1 : i - 1);
   });
@@ -637,8 +807,92 @@ window.addEventListener('DOMContentLoaded', () => {
   $('proximo').onclick = () => ir(i + 1);
   $('botao-notas').onclick = alternarNotas;
   $('tela-cheia').onclick = telaCheia;
+  // ---- Roteiro e modo palestrante ----
+  const tempoTexto = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  const minutos = (s) => (s >= 60 ? `${Math.round(s / 6) / 10} min`.replace('.', ',') : `${s} s`);
+  const tituloDe = (sl, k) => sl.t || (sl.k === 'secao' ? `Divisória · ${SECOES[sl.s]}` : (k === 0 ? 'Capa' : 'Obrigado!'));
+  const previsto = SLIDES.map((_, k) => SLIDES.slice(0, k).reduce((soma, x) => soma + (x.nota?.tempo || 0), 0));
+  const TOTAL = 45 * 60;
+  function roteiroHTML(sl) {
+    const n = sl.nota || {};
+    return [
+      n.fale && `<p class="fale"><b>Fale</b>${n.fale}</p>`,
+      n.pergunte && `<p class="pergunte"><b>Pergunte</b>${n.pergunte}</p>`,
+      n.dica && `<p class="dica"><b>Dica</b>${n.dica}</p>`,
+      sl.demo && '<p class="dica"><b>Teclas</b>D mostra a tabela de resultados, C mostra a comparação HTTP × HTTPS (dados fictícios).</p>',
+      sl.quiz && '<p class="dica"><b>Teclas</b>R revela a próxima mensagem; Shift + R revela todas.</p>'
+    ].filter(Boolean).join('');
+  }
+  const JANELA = 'palestrante-inclusao';
+  let parceira = window.name === JANELA && window.opener ? window.opener : null;
+  let modoPalestrante = false;
+  const relogio = { rodando: false, inicio: 0, acumulado: 0 };
+  const decorrido = () => relogio.acumulado + (relogio.rodando ? (Date.now() - relogio.inicio) / 1000 : 0);
+  function avisar(msg) { try { if (parceira && !parceira.closed) parceira.postMessage({ app: 'inclusao-digital', ...msg }, '*'); } catch (_) { /* janela fechada */ } }
+  function atualizarPalestrante() {
+    if (!modoPalestrante) return;
+    const sl = SLIDES[i], prox = SLIDES[i + 1];
+    $('agora-rotulo').textContent = `Slide ${i + 1} de ${N} · ${SECOES[sl.s]}`;
+    $('agora-titulo').textContent = tituloDe(sl, i);
+    $('agora-tempo').textContent = sl.nota?.tempo ? `Tempo sugerido: ${minutos(sl.nota.tempo)} · planejado chegar aqui em ${tempoTexto(previsto[i])}` : 'Sem tempo reservado';
+    $('roteiro').innerHTML = roteiroHTML(sl) || '<p class="dica">Sem anotações para este slide.</p>';
+    $('proximo-titulo').textContent = prox ? `${i + 2}. ${tituloDe(prox, i + 1)}` : 'Fim da apresentação';
+    $('p-ant').disabled = i === 0; $('p-prox').disabled = i === N - 1;
+    tique();
+  }
+  function tique() {
+    if (!modoPalestrante) return;
+    const t = decorrido();
+    $('decorrido').textContent = tempoTexto(t);
+    $('meta-tempo').textContent = `de ${tempoTexto(TOTAL)}${t > TOTAL ? ' · passou do tempo' : ''}`;
+    const r = $('ritmo');
+    if (!relogio.rodando && t === 0) { r.className = 'ritmo'; r.textContent = 'Aperte Iniciar'; return; }
+    const dif = t - previsto[i];
+    if (Math.abs(dif) < 60) { r.className = 'ritmo ok'; r.textContent = 'No tempo'; }
+    else if (dif > 0) { r.className = 'ritmo atrasado'; r.textContent = `Atrasado ${Math.round(dif / 60)} min`; }
+    else { r.className = 'ritmo adiantado'; r.textContent = `Adiantado ${Math.round(-dif / 60)} min`; }
+  }
+  function alternarRelogio(forcar) {
+    const ligar = forcar ?? !relogio.rodando;
+    if (ligar && !relogio.rodando) { relogio.rodando = true; relogio.inicio = Date.now(); }
+    else if (!ligar && relogio.rodando) { relogio.acumulado = decorrido(); relogio.rodando = false; }
+    $('relogio-btn').textContent = relogio.rodando ? 'Pausar' : (relogio.acumulado ? 'Continuar' : 'Iniciar');
+    tique();
+  }
+  function ativarPalestrante(ligar) {
+    modoPalestrante = ligar;
+    document.documentElement.classList.toggle('palestrante', ligar);
+    $('painel-palestrante').hidden = !ligar;
+    $('botao-palestrante').setAttribute('aria-pressed', String(ligar));
+    ajustar(); atualizarPalestrante();
+  }
+  // Abre uma segunda janela só para quem apresenta; se o navegador bloquear, divide esta mesma janela.
+  function abrirPalestrante() {
+    if (window.name === JANELA) return;
+    if (modoPalestrante) { ativarPalestrante(false); return; }
+    let w = null;
+    try { w = window.open(location.href.split('#')[0] + '#' + (i + 1), JANELA, 'popup,width=1280,height=800'); } catch (_) { w = null; }
+    if (w) { parceira = w; try { w.focus(); } catch (_) { /* foco opcional */ } }
+    else ativarPalestrante(true);
+  }
+  window.addEventListener('message', (e) => {
+    const m = e.data;
+    if (!m || m.app !== 'inclusao-digital') return;
+    if (parceira && e.source !== parceira) return;
+    if (!parceira && window.name !== JANELA) parceira = e.source;
+    if (m.tipo === 'ola') avisar({ tipo: 'ir', i });
+    else if (m.tipo === 'ir') ir(m.i, true);
+    else if (m.tipo === 'tecla') acao(m.k, m.shift, true);
+  });
+  setInterval(tique, 500);
+  $('botao-palestrante').onclick = abrirPalestrante;
+  $('relogio-btn').onclick = () => alternarRelogio();
+  $('zerar-btn').onclick = () => { relogio.rodando = false; relogio.acumulado = 0; alternarRelogio(false); };
+  $('p-ant').onclick = () => ir(i - 1);
+  $('p-prox').onclick = () => ir(i + 1);
   window.addEventListener('resize', ajustar);
   document.addEventListener('fullscreenchange', ajustar);
   ajustar(); mostrar();
+  if (window.name === JANELA) { ativarPalestrante(true); avisar({ tipo: 'ola' }); }
 });
 </script>
