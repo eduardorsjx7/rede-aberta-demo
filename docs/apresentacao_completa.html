@@ -223,6 +223,13 @@ html,body{height:100%;background:#14254d}body{margin:0}
 /* Cabeçalho do projeto preso ao topo, longe do título do slide */
 .telao .slide-header{position:absolute;top:34px;left:110px;right:110px}
 .telao .slide-header .barra-amarela{margin-bottom:14px}
+/* Do primeiro tema em diante, o cabeçalho do projeto sai e a seção com o progresso ocupa o topo */
+.sem-marca .marca-telao{display:none}
+.sem-marca .slide-header{justify-content:flex-end}
+.telao .sem-marca .slide{top:52px}
+.sem-marca .passo-telao{font-size:28px}
+.sem-marca .progresso-telao i{height:10px}
+.telao .sem-marca .slide h1{margin-top:22px}
 /* ---- Conteúdo centralizado: a área entre o cabeçalho e o rodapé é um bloco flex, e o corpo ocupa o centro dela ---- */
 .telao .slide{position:absolute;top:196px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:stretch;text-align:left}
 .telao .topo-slide{justify-content:flex-start}
@@ -504,6 +511,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   function mostrar() {
     const sl = SLIDES[i];
+    $('palco').classList.toggle('sem-marca', !sl.k && sl.s >= 1);
     const especial = $('especial');
     especial.hidden = !sl.k;
     especial.className = 'especial ' + (sl.k || '');
