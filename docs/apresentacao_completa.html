@@ -234,6 +234,32 @@ html,body{height:100%;background:#14254d}body{margin:0}
 .sem-marca #corpo-telao{flex:0 1 auto;margin:48px 0 auto}
 /* Abertura: sem o nome da seção acima do título */
 .abertura .topo-slide{display:none}
+/* Desenhos do caminho celular → Wi-Fi → página: ícones em SVG com animação contínua e pacotes de dados nas setas */
+.telao .caminho .desenho{width:150px;height:150px;border-radius:32px;font-size:0}
+.telao .caminho .desenho svg{width:70px;height:70px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.telao .caminho .desenho.wifi{width:150px;height:150px;border-radius:50%}
+.telao .caminho .desenho.wifi svg{width:84px;height:84px}
+.desenho .ponto{fill:var(--unit-amarelo);stroke:none}
+.desenho.wifi .ponto{fill:currentColor}
+.telao .caminho .ligacao{position:relative;height:4px;border-radius:2px}
+@media (prefers-reduced-motion:no-preference){
+  .desenho .onda{animation:onda 2.2s ease-in-out infinite}
+  .desenho .o2{animation-delay:.25s}.desenho .o3{animation-delay:.5s}
+  .desenho .aviso{transform-box:fill-box;transform-origin:center;animation:aviso 1.8s ease-in-out infinite}
+  .desenho .linha{stroke-dasharray:12;animation:digita 2.8s ease-in-out infinite}
+  .desenho .l2{animation-delay:.45s}
+  .desenho.celular svg{animation:balanca 3.2s ease-in-out infinite;transform-origin:50% 90%}
+  .desenho.wifi{animation:halo 2.2s ease-out infinite}
+  .ligacao i{position:absolute;top:-6px;left:0;width:16px;height:16px;border-radius:50%;background:var(--unit-amarelo);box-shadow:0 0 0 4px #f2b63233;opacity:0;animation:pacote 2.4s linear infinite}
+  .ligacao i:nth-child(2){animation-delay:.8s}.ligacao i:nth-child(3){animation-delay:1.6s}
+  .caminho .ligacao:last-of-type i{animation-delay:1.2s}.caminho .ligacao:last-of-type i:nth-child(2){animation-delay:2s}.caminho .ligacao:last-of-type i:nth-child(3){animation-delay:2.8s}
+}
+@keyframes onda{0%,100%{opacity:.25}45%{opacity:1}}
+@keyframes aviso{0%,100%{transform:scale(.7);opacity:.6}50%{transform:scale(1.15);opacity:1}}
+@keyframes digita{0%{stroke-dashoffset:12}40%,85%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes balanca{0%,100%{transform:rotate(0)}50%{transform:rotate(-6deg)}}
+@keyframes halo{0%{box-shadow:0 0 0 0 #2453a655}100%{box-shadow:0 0 0 34px #2453a600}}
+@keyframes pacote{0%{left:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:calc(100% - 16px);opacity:0}}
 /* ---- Conteúdo centralizado: a área entre o cabeçalho e o rodapé é um bloco flex, e o corpo ocupa o centro dela ---- */
 .telao .slide{position:absolute;top:196px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:stretch;text-align:left}
 .telao .topo-slide{justify-content:flex-start}
@@ -471,7 +497,18 @@ const SLIDES = [
   divisoria(7, ['Uma rede Wi-Fi aberta de teste', 'HTTP sem cadeado × HTTPS com cadeado'], 8)
 ];
 
-ETAPAS.forEach((e) => SLIDES.push({ s: 7, t: e.titulo, html: e.corpo, n: e.nota, demo: true }));
+// Troca os caracteres usados como desenho no telão do app por ícones SVG animados.
+const DESENHOS = {
+  celular: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2" width="11" height="20" rx="2.6"/><path d="M10.5 5h3"/><circle cx="12" cy="18.4" r=".8"/><circle class="ponto aviso" cx="17.6" cy="3" r="2.4"/></svg>',
+  wifi: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="onda o3" d="M2.5 9.5a14 14 0 0 1 19 0"/><path class="onda o2" d="M5.5 13a9.5 9.5 0 0 1 13 0"/><path class="onda o1" d="M8.7 16.4a4.6 4.6 0 0 1 6.6 0"/><circle class="ponto" cx="12" cy="19.7" r="1.3"/></svg>',
+  notebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="11.5" rx="1.5"/><path d="M2 19.5h20M4.5 15.5L2.5 19.5M19.5 15.5l2 4"/><path class="linha l1" d="M7 8h10"/><path class="linha l2" d="M7 11.5h6"/></svg>'
+};
+const comIcones = (html) => html
+  .replace('<span class="desenho celular">▯</span>', `<span class="desenho celular">${DESENHOS.celular}</span>`)
+  .replace('<span class="desenho wifi">⌁</span>', `<span class="desenho wifi">${DESENHOS.wifi}</span>`)
+  .replace('<span class="desenho notebook">▱</span>', `<span class="desenho notebook">${DESENHOS.notebook}</span>`)
+  .replaceAll('<span class="ligacao"></span>', '<span class="ligacao"><i></i><i></i><i></i></span>');
+ETAPAS.forEach((e) => SLIDES.push({ s: 7, t: e.titulo, html: comIcones(e.corpo), n: e.nota, demo: true }));
 
 SLIDES.push(
   { s: 8, t: 'Seis regras para levar para casa', html: `<div class="cards compactos">${card('cadeado', 'Confira o cadeado', 'Senha e banco só com HTTPS.')}${card('chave', 'Senha forte + duas etapas', 'Em toda conta importante.')}${card('relogio', 'Pressa é sinal de golpe', 'Pare e confirme.')}${card('escudo', 'Código é segredo', 'Nunca repasse o código do SMS.')}${card('lupa', 'Confira antes de repassar', 'Fonte, data e outros sites.')}${card('pessoa', 'Cuide dos seus dados', 'CPF só quando for preciso.', 'destaque')}</div>`,
