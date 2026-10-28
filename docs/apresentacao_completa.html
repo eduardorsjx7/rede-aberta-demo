@@ -230,10 +230,12 @@ html,body{height:100%;background:#14254d}body{margin:0}
 .sem-marca .passo-telao{font-size:28px}
 .sem-marca .progresso-telao i{height:10px}
 .telao .sem-marca .slide h1{margin-top:22px}
+/* Abertura: sem o nome da seção acima do título */
+.abertura .topo-slide{display:none}
 /* ---- Conteúdo centralizado: a área entre o cabeçalho e o rodapé é um bloco flex, e o corpo ocupa o centro dela ---- */
 .telao .slide{position:absolute;top:196px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:stretch;text-align:left}
 .telao .topo-slide{justify-content:flex-start}
-.telao .slide h1{margin:18px 0 0;max-width:30ch;text-align:left}
+.telao .slide h1{margin:18px auto 0;max-width:30ch;text-align:center}
 #corpo-telao{flex:1;min-height:0;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}
 #corpo-telao>*{width:100%;margin-top:0;margin-bottom:0}
 #corpo-telao>.slide-lead,#corpo-telao>.pergunta{max-width:46ch;margin-left:auto;margin-right:auto}
@@ -512,6 +514,7 @@ window.addEventListener('DOMContentLoaded', () => {
   function mostrar() {
     const sl = SLIDES[i];
     $('palco').classList.toggle('sem-marca', !sl.k && sl.s >= 1);
+    $('palco').classList.toggle('abertura', !sl.k && sl.s === 0);
     const especial = $('especial');
     especial.hidden = !sl.k;
     especial.className = 'especial ' + (sl.k || '');
