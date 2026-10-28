@@ -10,7 +10,8 @@
 | `servidor.py` | Página de participação (`http://10.42.0.1:8080`) |
 | `comparacao.py` | Laboratório HTTP × HTTPS |
 | `interface/` | Painel (`index.html`, `app.js`, `estilo.css`), **telão** (`telao.html`, `telao.css`) e textos das etapas (`conteudo.js`) |
-| `docs/` | Contexto do projeto, roteiro de fala e guia de slides |
+| `docs/` | Contexto do projeto, roteiro de fala, guia de slides e `previa_telao.html` |
+| `ver_telao.py` | Abre só a prévia do telão no navegador, sem rodar o app |
 | `tests/` | Testes automatizados e verificação da interface |
 | `iniciar.sh`, `clientes.sh`, `abrir_app.sh`, `instalar_atalho.py` | Scripts de linha de comando e atalho do app |
 
@@ -18,6 +19,14 @@
 Este projeto cria um ponto de acesso **sem senha** para uma atividade presencial e oferece uma página educativa em `http://10.42.0.1:8080`. A página só grava dados depois que a pessoa marca a caixa de concordância e envia o formulário: horário, IP, identificação do navegador e apelido opcional. O comando `clientes.sh` mostra os endereços IP e MAC presentes na tabela de vizinhos do sistema; essa consulta não grava arquivo.
 
 Para conduzir a fala, os cliques e a participação do público, consulte o [roteiro de apresentação](docs/ROTEIRO_APRESENTACAO.md).
+
+## Ver só o telão (sem rodar o app)
+
+```bash
+python3 ver_telao.py
+```
+
+Ou abra `docs/previa_telao.html` com duplo clique. Setas ← → mudam de etapa, **D** mostra a tabela de resultados, **C** a comparação HTTP × HTTPS (dados fictícios) e **F** entra em tela cheia. Edite `interface/telao.css` e `interface/conteudo.js` e recarregue com F5. Funciona em qualquer sistema com navegador.
 
 ## Baixar e iniciar
 
