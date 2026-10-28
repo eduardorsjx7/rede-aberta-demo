@@ -220,7 +220,70 @@ html,body{height:100%;background:#14254d}body{margin:0}
 @media (max-width:430px){.barra-telao .texto-btn{display:none}}
 .gire{display:none;position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-size:14px;line-height:1.4;color:#c9d3e8;pointer-events:none}
 @media (orientation:portrait) and (max-width:760px){.gire{display:block}}
-@media (prefers-reduced-motion:no-preference){.slide,.especial .conteudo{animation:entra .35s ease-out}@keyframes entra{from{opacity:.35;transform:translateY(10px)}to{opacity:1;transform:none}}}
+/* ---- Conteúdo centralizado: a área entre o cabeçalho e o rodapé é um bloco flex, e o corpo ocupa o centro dela ---- */
+.telao .slide{position:absolute;top:178px;bottom:118px;left:110px;right:110px;padding:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+.telao .topo-slide{justify-content:center}
+.telao .slide h1{margin:18px auto 0;max-width:30ch}
+#corpo-telao{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px}
+#corpo-telao>*{width:100%;margin-top:0;margin-bottom:0}
+#corpo-telao>.slide-lead,#corpo-telao>.pergunta{max-width:46ch;margin-left:auto;margin-right:auto}
+#corpo-telao>.slide-aviso{width:auto;max-width:1500px;text-align:left}
+#corpo-telao>.dica-quiz,#corpo-telao>.total-tempo{width:auto}
+#corpo-telao .mt{margin-top:0}
+#corpo-telao>.ficha-exemplo{max-width:1300px;text-align:left}
+#corpo-telao>.conectar{width:auto;text-align:left}
+#corpo-telao>.caminho{margin:0}
+#corpo-telao>.comparacao-intro{max-width:1500px}
+.card{align-items:center;text-align:center}
+.card .ic{margin-bottom:2px}
+.lado,.msg,.fatos,.refs li,.grupos .card{text-align:left}
+.grupos .card{align-items:flex-start}
+.ods{justify-content:center}
+.equipe .card{align-items:flex-start;text-align:left}
+.equipe .coluna .card{align-items:center;text-align:center}
+.com-foto .fatos{text-align:left}
+
+/* ---- Animações (só CSS, disparadas pelo JavaScript a cada troca de slide) ---- */
+.progresso-telao i{transition:background-color .4s ease,width .4s ease}
+.progresso-telao i.atual{width:60px}
+.barra-telao button{transition:background-color .2s ease,border-color .2s ease,transform .15s ease}
+.barra-telao button:active{transform:scale(.94)}
+@media (prefers-reduced-motion:no-preference){
+  .anima .slide .topo-slide{animation:surge .5s cubic-bezier(.2,.7,.2,1) both}
+  .anima .slide h1{animation:desliza .6s cubic-bezier(.2,.7,.2,1) .06s both}
+  .anima .item{animation:surge .6s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i) * 75ms + 160ms)}
+  .anima .item .ic{animation:estoura .5s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i) * 75ms + 320ms)}
+  .anima .etiquetas span{animation:estoura .45s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--j) * 45ms + 450ms)}
+  .anima .escala b{animation:estoura .5s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i) * 75ms + 300ms)}
+  .anima .especial .item{animation:desliza .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i) * 110ms + 120ms)}
+  .anima .especial .numero{animation:numero .8s cubic-bezier(.2,.7,.2,1) both}
+  .anima .especial .faixa{animation:faixa .7s cubic-bezier(.2,.7,.2,1) both;transform-origin:top}
+  .anima .especial .globo{animation:globo 1.1s cubic-bezier(.2,.7,.2,1) both,flutua 9s ease-in-out 1.1s infinite alternate}
+  .anima .especial .logo{animation:surge .6s ease-out .1s both}
+  .anima .especial .pe{animation:surge .6s ease-out .7s both}
+  .msg.aberta .msg-veredito{animation:vira .45s cubic-bezier(.2,.7,.2,1) both}
+  .msg.aberta.golpe{animation:treme .45s ease .1s}
+  .msg.aberta.segura{animation:pulsa .6s ease .1s}
+  .dados-telao:not([hidden]),.comparacao-telao:not([hidden]){animation:sobe .45s cubic-bezier(.2,.7,.2,1) both}
+  .notas-painel:not([hidden]){animation:sobe-notas .3s ease-out both}
+  .exemplo-senha{animation:brilha 2.4s ease-in-out 1s infinite}
+}
+/* Rede de segurança: depois da entrada, o slide fica no estado final mesmo que o navegador não tenha animado (aba em segundo plano, miniatura). */
+.anima-fim .item,.anima-fim .item .ic,.anima-fim .etiquetas span,.anima-fim .escala b,.anima-fim .slide .topo-slide,.anima-fim .slide h1,.anima-fim .especial .numero,.anima-fim .especial .faixa,.anima-fim .especial .logo,.anima-fim .especial .pe{animation:none}
+.anima-fim .especial .globo{animation:flutua 9s ease-in-out infinite alternate}
+@keyframes surge{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes desliza{from{opacity:0;transform:translateX(calc(var(--dir,1) * 70px))}to{opacity:1;transform:none}}
+@keyframes estoura{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+@keyframes numero{from{opacity:0;transform:translateY(60px) scale(.85)}to{opacity:1;transform:none}}
+@keyframes faixa{from{transform:scaleY(0)}to{transform:none}}
+@keyframes globo{from{opacity:0;transform:translateX(160px) rotate(-14deg)}to{opacity:1;transform:none}}
+@keyframes flutua{from{transform:none}to{transform:translateY(-18px) rotate(2deg)}}
+@keyframes vira{from{opacity:0;transform:perspective(600px) rotateX(-90deg)}to{opacity:1;transform:none}}
+@keyframes treme{0%,100%{transform:none}20%{transform:translateX(-10px) rotate(-1deg)}40%{transform:translateX(9px) rotate(1deg)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+@keyframes pulsa{0%,100%{transform:none}50%{transform:scale(1.04)}}
+@keyframes sobe{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes sobe-notas{from{transform:translateY(100%)}to{transform:none}}
+@keyframes brilha{0%,100%{box-shadow:0 0 0 0 #f2b63200}50%{box-shadow:0 0 0 8px #f2b63240}}
 </style>
 
 <div class="telao">
@@ -423,6 +486,21 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   function esconderPaineis() { $('dados-telao').hidden = true; $('comparacao-telao').hidden = true; }
 
+  let direcao = 1;
+  const ITENS = ['.cards>*', '.agenda>li', '.escala>div', '.sinais>div', '.mensagens>.msg', '.lados>.lado', '.fatos>div', '.nomes>li', '.equipe .coluna>.card', '.refs>li', '.ods>span', '.aprendizados>div', '.passos-form>div', '.linha-tempo>div', '.comparacao-intro>div', '.caminho>*', '.conectar>div', '.ficha-exemplo', '.com-foto>img', '.grupos>.card', '#corpo-telao>.slide-lead', '#corpo-telao>.slide-aviso', '#corpo-telao>.pergunta', '#corpo-telao>.dica-quiz', '#corpo-telao>.total-tempo'].join(',');
+  // Marca os blocos do slide em ordem de leitura; o CSS usa --i para escalonar a entrada.
+  function animar(raiz, especial) {
+    const palco = $('palco');
+    palco.classList.remove('anima', 'anima-fim');
+    clearTimeout(animar.t);
+    palco.style.setProperty('--dir', direcao);
+    const alvos = especial ? raiz.querySelectorAll('.conteudo>*, .aprender>li') : raiz.querySelectorAll(ITENS);
+    alvos.forEach((el, n) => { el.classList.add('item'); el.style.setProperty('--i', Math.min(n, 14)); });
+    raiz.querySelectorAll('.etiquetas').forEach((g) => [...g.children].forEach((el, n) => el.style.setProperty('--j', n)));
+    void palco.offsetWidth;
+    palco.classList.add('anima');
+    animar.t = setTimeout(() => palco.classList.add('anima-fim'), 2600);
+  }
   function mostrar() {
     const sl = SLIDES[i];
     const especial = $('especial');
@@ -445,9 +523,10 @@ window.addEventListener('DOMContentLoaded', () => {
     $('anterior').disabled = i === 0;
     $('proximo').disabled = i === N - 1;
     esconderPaineis();
+    animar(sl.k ? especial : $('corpo-telao'), !!sl.k);
     try { history.replaceState(null, '', '#' + (i + 1)); } catch (_) { /* hash opcional */ }
   }
-  function ir(n) { const novo = Math.max(0, Math.min(N - 1, n)); if (novo !== i) { i = novo; mostrar(); } }
+  function ir(n) { const novo = Math.max(0, Math.min(N - 1, n)); if (novo !== i) { direcao = novo > i ? 1 : -1; i = novo; mostrar(); } }
   function revelar(todos) {
     const msgs = [...document.querySelectorAll('#quiz .msg')];
     if (todos) { msgs.forEach((m) => m.classList.add('aberta')); return; }
