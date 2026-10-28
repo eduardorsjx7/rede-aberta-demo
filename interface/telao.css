@@ -73,8 +73,10 @@
 .telao .caminho .desenho.wifi svg{width:84px;height:84px}
 .desenho .ponto{fill:var(--unit-amarelo);stroke:none}
 .desenho.wifi .ponto{fill:currentColor}
-.telao .caminho .ligacao{position:relative;height:4px;border-radius:2px}
-.telao .caminho{margin:40px 0 36px}
+/* Setas: alinhadas ao centro dos desenhos, trilho tracejado que corre no sentido dos dados e ponta em chevron */
+.telao .caminho{margin:40px 0 36px;align-items:flex-start}
+.telao .caminho .ligacao{position:relative;flex:none;width:170px;height:6px;margin-top:72px;border-radius:3px;background:repeating-linear-gradient(90deg,var(--unit-azul) 0 16px,transparent 16px 26px);background-size:26px 6px}
+.telao .caminho .ligacao:after{content:"";position:absolute;right:-2px;top:-8px;width:16px;height:16px;border:0;border-top:6px solid var(--unit-azul);border-right:6px solid var(--unit-azul);border-radius:2px;transform:rotate(45deg)}
 @media (prefers-reduced-motion:no-preference){
   .desenho .onda{animation:onda 2.2s ease-in-out infinite}
   .desenho .o2{animation-delay:.25s}.desenho .o3{animation-delay:.5s}
@@ -83,7 +85,8 @@
   .desenho .l2{animation-delay:.45s}
   .desenho.celular svg{animation:balanca 3.2s ease-in-out infinite;transform-origin:50% 90%}
   .desenho.wifi{animation:halo 2.2s ease-out infinite}
-  .ligacao i{position:absolute;top:-6px;left:0;width:16px;height:16px;border-radius:50%;background:var(--unit-amarelo);box-shadow:0 0 0 4px #f2b63233;opacity:0;animation:pacote 2.4s linear infinite}
+  .ligacao i{position:absolute;top:-5px;left:0;width:16px;height:16px;border-radius:50%;background:var(--unit-amarelo);box-shadow:0 0 0 4px #f2b63233;opacity:0;animation:pacote 2.4s linear infinite}
+  .telao .caminho .ligacao{animation:fluxo .9s linear infinite}
   .ligacao i:nth-child(2){animation-delay:.8s}.ligacao i:nth-child(3){animation-delay:1.6s}
   .caminho .ligacao:last-of-type i{animation-delay:1.2s}.caminho .ligacao:last-of-type i:nth-child(2){animation-delay:2s}.caminho .ligacao:last-of-type i:nth-child(3){animation-delay:2.8s}
 }
@@ -92,4 +95,5 @@
 @keyframes digita{0%{stroke-dashoffset:12}40%,85%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 @keyframes balanca{0%,100%{transform:rotate(0)}50%{transform:rotate(-6deg)}}
 @keyframes halo{0%{box-shadow:0 0 0 0 #2453a655}100%{box-shadow:0 0 0 34px #2453a600}}
-@keyframes pacote{0%{left:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:calc(100% - 16px);opacity:0}}
+@keyframes fluxo{to{background-position:26px 0}}
+@keyframes pacote{0%{left:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:calc(100% - 22px);opacity:0}}
