@@ -29,10 +29,11 @@ class ErroOperacao(Exception):
 MENSAGEM_SEM_LINUX = ("A demonstração real (rede Wi-Fi aberta) precisa de Linux com NetworkManager e um adaptador "
                       "com modo AP. Neste computador, use o Ensaio com dados fictícios e a comparação HTTP × HTTPS "
                       "pelo notebook.")
-MENSAGEM_MAC_SEM_REDE = ("Ligue o Compartilhamento de Internet do Mac: Ajustes do Sistema › Geral › Compartilhamento › "
-                         "Compartilhamento de Internet. Em “Compartilhar a conexão de”, escolha uma fonte que não seja o "
-                         "Wi-Fi (iPhone por USB, adaptador Ethernet ou Ponte Thunderbolt); em “Para aparelhos usando”, "
-                         "marque Wi-Fi. Depois clique em Verificar equipamento de novo.")
+MENSAGEM_MAC_SEM_REDE = ("Ligue o Compartilhamento de Internet: Ajustes do Sistema › Geral › Compartilhamento › ⓘ ao lado "
+                         "de Compartilhamento de Internet. Em “Compartilhar sua conexão de”, troque Wi-Fi por USB do "
+                         "iPhone, Ponte Thunderbolt ou um Adaptador Ethernet: com Wi-Fi ali, a opção Wi-Fi não aparece "
+                         "embaixo. Em “Para dispositivos que usam”, ative Wi-Fi, ajuste as Opções de Wi-Fi e ative o "
+                         "Compartilhamento de Internet no topo. Depois clique em Verificar equipamento de novo.")
 
 
 class Rede:

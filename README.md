@@ -60,9 +60,9 @@ O instalador cria **Rede Aberta.command** na pasta do projeto e na Mesa: dê doi
 **Antes da demonstração real no Mac:**
 
 1. Abra **Ajustes do Sistema › Geral › Compartilhamento** e clique no **ⓘ** ao lado de **Compartilhamento de Internet**.
-2. Em **Compartilhar a conexão de**, escolha uma fonte que não seja o Wi-Fi: iPhone por USB, adaptador Ethernet ou Ponte Thunderbolt. A demonstração funciona mesmo sem internet nessa fonte.
-3. Em **Para aparelhos usando**, marque **Wi-Fi**. Em **Opções de Wi-Fi**, defina o nome da rede (por exemplo, `EXTENSAO-REDE-ABERTA`) e, se o macOS oferecer, a segurança **Nenhuma**; se não oferecer, use uma senha simples e mostre-a ao público.
-4. Ligue o **Compartilhamento de Internet**. O Mac sai da rede Wi-Fi em que estava enquanto ele estiver ligado.
+2. Em **Compartilhar sua conexão de**, troque **Wi-Fi** por **USB do iPhone**, **Ponte Thunderbolt** ou um **Adaptador Ethernet**. Com **Wi-Fi** nesse campo, a opção **Wi-Fi** não aparece na lista de baixo, porque o Mac não recebe e distribui pelo Wi-Fi ao mesmo tempo. A demonstração funciona mesmo sem internet nessa fonte (com USB do iPhone, ligue o Acesso Pessoal no iPhone e conecte o cabo).
+3. Em **Para dispositivos que usam**, ative **Wi-Fi**. Clique em **Opções de Wi-Fi** e defina o nome da rede (por exemplo, `EXTENSAO-REDE-ABERTA`) e, se o macOS oferecer, a segurança **Nenhuma**; se não oferecer, use uma senha simples e mostre-a ao público.
+4. Ative **Compartilhamento de Internet** no topo da janela e clique em **OK**. O Mac sai da rede Wi-Fi em que estava enquanto ele estiver ativo.
 5. No painel, escolha **Demonstração real**, clique em **Verificar equipamento** e depois em **Iniciar demonstração real**. O nome da rede e o endereço da página (por exemplo, `http://192.168.2.1:8080`) aparecem sozinhos na apresentação.
 6. Na primeira vez, o macOS pode perguntar se o Python pode aceitar conexões de entrada: clique em **Permitir**, senão os celulares não abrem a página.
 7. Ao terminar, clique em **Encerrar dinâmica** e desligue o Compartilhamento de Internet.
