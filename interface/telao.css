@@ -66,3 +66,30 @@
 .telao .comparacao-telao .quadro-protocolo h3{font-weight:800;color:var(--unit-azul)}
 .telao .quadro-protocolo .veredito{color:var(--unit-navy)}
 .telao .conclusao-comparacao{font-weight:600;color:var(--unit-navy)}
+/* Desenhos do caminho celular → Wi-Fi → página: ícones em SVG com animação contínua e pacotes de dados nas setas */
+.telao .caminho .desenho{width:150px;height:150px;border-radius:32px;font-size:0}
+.telao .caminho .desenho svg{width:70px;height:70px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.telao .caminho .desenho.wifi{width:150px;height:150px;border-radius:50%}
+.telao .caminho .desenho.wifi svg{width:84px;height:84px}
+.desenho .ponto{fill:var(--unit-amarelo);stroke:none}
+.desenho.wifi .ponto{fill:currentColor}
+.telao .caminho .ligacao{position:relative;height:4px;border-radius:2px}
+.telao .caminho{margin:40px 0 36px}
+@media (prefers-reduced-motion:no-preference){
+  .desenho .onda{animation:onda 2.2s ease-in-out infinite}
+  .desenho .o2{animation-delay:.25s}.desenho .o3{animation-delay:.5s}
+  .desenho .aviso{transform-box:fill-box;transform-origin:center;animation:aviso 1.8s ease-in-out infinite}
+  .desenho .linha{stroke-dasharray:12;animation:digita 2.8s ease-in-out infinite}
+  .desenho .l2{animation-delay:.45s}
+  .desenho.celular svg{animation:balanca 3.2s ease-in-out infinite;transform-origin:50% 90%}
+  .desenho.wifi{animation:halo 2.2s ease-out infinite}
+  .ligacao i{position:absolute;top:-6px;left:0;width:16px;height:16px;border-radius:50%;background:var(--unit-amarelo);box-shadow:0 0 0 4px #f2b63233;opacity:0;animation:pacote 2.4s linear infinite}
+  .ligacao i:nth-child(2){animation-delay:.8s}.ligacao i:nth-child(3){animation-delay:1.6s}
+  .caminho .ligacao:last-of-type i{animation-delay:1.2s}.caminho .ligacao:last-of-type i:nth-child(2){animation-delay:2s}.caminho .ligacao:last-of-type i:nth-child(3){animation-delay:2.8s}
+}
+@keyframes onda{0%,100%{opacity:.25}45%{opacity:1}}
+@keyframes aviso{0%,100%{transform:scale(.7);opacity:.6}50%{transform:scale(1.15);opacity:1}}
+@keyframes digita{0%{stroke-dashoffset:12}40%,85%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes balanca{0%,100%{transform:rotate(0)}50%{transform:rotate(-6deg)}}
+@keyframes halo{0%{box-shadow:0 0 0 0 #2453a655}100%{box-shadow:0 0 0 34px #2453a600}}
+@keyframes pacote{0%{left:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:calc(100% - 16px);opacity:0}}
