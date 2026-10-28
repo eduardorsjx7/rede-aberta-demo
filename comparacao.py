@@ -229,12 +229,15 @@ class Comparacao:
         self._openssl("req", "-x509", "-newkey", "rsa:2048", "-nodes", "-sha256", "-days", "2",
                       "-keyout", "ca.key", "-out", "ca.crt", "-subj", "/CN=Rede Aberta Laboratorio",
                       "-addext", "basicConstraints=critical,CA:TRUE,pathlen:0",
-                      "-addext", "keyUsage=critical,keyCertSign,cRLSign")
+                      "-addext", "keyUsage=critical,keyCertSign,cRLSign",
+                      "-addext", "subjectKeyIdentifier=hash")
         self._openssl("req", "-new", "-newkey", "rsa:2048", "-nodes", "-keyout", "servidor.key",
                       "-out", "servidor.csr", "-subj", "/CN=Rede Aberta Demonstracao")
         (self.pasta / "extensoes.cnf").write_text(
             "basicConstraints=critical,CA:FALSE\nkeyUsage=critical,digitalSignature,keyEncipherment\n"
-            "extendedKeyUsage=serverAuth\nsubjectAltName=IP:127.0.0.1,IP:10.42.0.1,DNS:localhost\n", encoding="utf-8")
+            "extendedKeyUsage=serverAuth\nsubjectAltName=IP:127.0.0.1,IP:10.42.0.1,DNS:localhost\n"
+            # Python 3.13+ verifica em modo estrito e exige os identificadores de chave.
+            "subjectKeyIdentifier=hash\nauthorityKeyIdentifier=keyid,issuer\n", encoding="utf-8")
         self._openssl("x509", "-req", "-in", "servidor.csr", "-CA", "ca.crt", "-CAkey", "ca.key",
                       "-CAcreateserial", "-out", "servidor.crt", "-days", "2", "-sha256", "-extfile", "extensoes.cnf")
         for arquivo in self.pasta.iterdir():

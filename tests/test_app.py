@@ -340,6 +340,14 @@ class TestComandos(unittest.TestCase):
         with self.assertRaisesRegex(ErroOperacao, 'demorou'):
             Rede().executar(['nmcli', 'general', 'status'])
 
+    @patch('controle.subprocess.run')
+    @patch('controle.sys.platform', 'darwin')
+    def test_sem_linux_explica_e_nao_executa_comandos(self, run):
+        for operacao in (lambda rede: rede.interfaces(), lambda rede: rede.verificar('wlan0')):
+            with self.assertRaisesRegex(ErroOperacao, 'precisa de Linux'):
+                operacao(Rede())
+        run.assert_not_called()
+
 
 if __name__ == '__main__':
     unittest.main()

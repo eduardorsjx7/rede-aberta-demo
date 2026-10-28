@@ -45,6 +45,18 @@ bash abrir_app.sh
 
 Depois da instalação, abra **Rede aberta** pelo menu de aplicativos ou pelo atalho na área de trabalho. A comparação HTTP/HTTPS pelo notebook funciona sem criar uma rede Wi-Fi. Para conectar celulares, confira os requisitos de NetworkManager e adaptador AP abaixo.
 
+### No macOS (ensaio e comparação)
+
+No Mac funcionam o painel, o **Ensaio com dados fictícios**, o telão e a comparação HTTP × HTTPS pelo notebook. A **Demonstração real** (rede Wi-Fi aberta para os celulares) precisa de Linux com NetworkManager; no Mac, **Verificar equipamento** explica isso em vez de tentar mexer na rede.
+
+```bash
+cd rede-aberta-demo
+python3 instalar_atalho.py
+bash abrir_app.sh
+```
+
+O instalador cria **Rede Aberta.command** na pasta do projeto e na Mesa: dê dois cliques para abrir o painel no navegador. Se o macOS bloquear na primeira vez, clique com o botão direito no arquivo, escolha **Abrir** e confirme. Para rodar os testes: `python3 -m unittest discover -s tests -v`.
+
 ## Usar o aplicativo por botões
 
 Abra **Rede aberta** pelo menu de aplicativos do Linux ou pelo atalho **Rede Aberta** na área de trabalho. O navegador abre o painel da equipe; durante a apresentação não é necessário usar o terminal. Se o sistema perguntar, escolha **Permitir iniciar** no atalho da área de trabalho.

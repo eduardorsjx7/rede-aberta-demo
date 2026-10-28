@@ -6,6 +6,7 @@ dados/
 
 # Saídas locais e dados da demonstração
 /Rede Aberta.desktop
+/Rede Aberta.command
 *.jsonl
 *.log
 *.bin

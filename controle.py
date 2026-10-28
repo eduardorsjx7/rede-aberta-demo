@@ -5,6 +5,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import threading
 import uuid
 from datetime import datetime, timezone
@@ -24,7 +25,17 @@ class ErroOperacao(Exception):
     pass
 
 
+MENSAGEM_SEM_LINUX = ("A demonstração real (rede Wi-Fi aberta) precisa de Linux com NetworkManager e um adaptador "
+                      "com modo AP. Neste computador, use o Ensaio com dados fictícios e a comparação HTTP × HTTPS "
+                      "pelo notebook.")
+
+
 class Rede:
+    @staticmethod
+    def exigir_linux():
+        if not sys.platform.startswith("linux"):
+            raise ErroOperacao(MENSAGEM_SEM_LINUX)
+
     def executar(self, argumentos, autorizar=False):
         programa = shutil.which(argumentos[0])
         if not programa:
@@ -53,11 +64,13 @@ class Rede:
             raise ErroOperacao(f"Não foi possível executar {argumentos[0]}: {erro}") from erro
 
     def interfaces(self):
+        self.exigir_linux()
         saida = self.executar(["nmcli", "-t", "-f", "DEVICE,TYPE,STATE", "device", "status"])
         return [linha.split(":", 2)[0] for linha in saida.splitlines()
                 if len(linha.split(":", 2)) == 3 and linha.split(":", 2)[1] == "wifi"]
 
     def verificar(self, interface):
+        self.exigir_linux()
         if interface not in self.interfaces():
             raise ErroOperacao("Selecione uma interface Wi-Fi disponível.")
         suporte = self.executar(["nmcli", "-g", "WIFI-PROPERTIES.AP", "device", "show", interface])
@@ -100,7 +113,8 @@ class Rede:
 
 class Controle:
     def __init__(self, diretorio, rede=None):
-        self.diretorio = Path(diretorio)
+        # Caminho real: no macOS, /var aponta para /private/var e as comparações de pasta precisam bater.
+        self.diretorio = Path(diretorio).resolve()
         self.rede = rede or Rede()
         self.lock = threading.RLock()
         self.ocupado = False
