@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Inclusão Digital e Segurança da Informação</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
 <style>
@@ -81,7 +82,10 @@
 /* Palco 1920 × 1080 escalado, no visual do deck do projeto (navy, azul Unit e amarelo). Visual único, pensado para projetor. */
 html,body{height:100%;background:#14254d}body{margin:0}
 .telao{position:fixed;inset:0;font-family:"Montserrat","Trebuchet MS","Liberation Sans",sans-serif}
-.barra-telao{gap:12px}
+:root{--barra:48px}
+.telao .barra-telao{gap:12px;height:calc(var(--barra) + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.telao .viewport{top:calc(var(--barra) + env(safe-area-inset-top,0px));bottom:env(safe-area-inset-bottom,0px);left:env(safe-area-inset-left,0px);right:env(safe-area-inset-right,0px)}
+.barra-telao button{white-space:nowrap}
 .barra-telao .acoes{display:flex;gap:8px}
 .barra-telao .dica{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .telao .slide h1{font-size:64px;letter-spacing:-2px;margin:20px 0 34px;max-width:34ch;text-wrap:balance}
@@ -97,26 +101,27 @@ html,body{height:100%;background:#14254d}body{margin:0}
 /* Cartões genéricos */
 .cards{display:grid;grid-template-columns:repeat(var(--c,3),minmax(0,1fr));gap:32px}
 .card{background:var(--unit-cartao);border-radius:20px;box-shadow:0 4px 18px #14254d14;padding:32px 34px;display:flex;flex-direction:column;gap:18px}
-.card h2{font-size:36px;font-weight:800;line-height:1.15;color:var(--unit-navy);margin:6px 0 0}
-.card p{font-size:28px;line-height:1.45;color:var(--unit-muted);margin:0}
+.card h2{font-size:38px;font-weight:800;line-height:1.15;color:var(--unit-navy);margin:6px 0 0}
+.card p{font-size:30px;line-height:1.45;color:var(--unit-muted);margin:0}
 .card .rotulo{font-size:20px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--unit-azul)}
 .card.destaque{background:var(--unit-navy)}
 .card.destaque h2{color:#fff}.card.destaque p{color:#dbe4f5}.card.destaque .rotulo{color:var(--unit-amarelo)}
 .card.destaque .ic{background:var(--unit-amarelo);color:var(--unit-navy)}
 .card.amarelo{background:var(--unit-amarelo-claro)}.card.amarelo .rotulo{color:var(--unit-ouro)}
-.cards.compactos .card{padding:28px 30px;gap:12px}.cards.compactos .card h2{font-size:32px}.cards.compactos .card p{font-size:26px}
+.cards.compactos .card{padding:28px 30px;gap:12px}.cards.compactos .card h2{font-size:34px}.cards.compactos .card p{font-size:28px}
 .linha-ic{display:flex;align-items:center;gap:22px}
 .linha-ic h2{margin:0}
 .mt{margin-top:34px}
 .telao .slide-aviso{margin-top:34px}
 
 /* Agenda */
-.agenda{display:grid;grid-template-columns:1fr 1fr;gap:16px 48px;counter-reset:ag}
+.agenda{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,auto);grid-auto-flow:column;gap:18px 48px;counter-reset:ag}
 .agenda li{list-style:none;display:grid;grid-template-columns:64px 1fr auto;align-items:center;gap:22px;background:var(--unit-cartao);border-radius:16px;padding:16px 26px;font-size:30px;font-weight:700;color:var(--unit-navy);box-shadow:0 4px 18px #14254d10}
 .agenda li::before{counter-increment:ag;content:counter(ag);display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:14px;background:var(--unit-navy);color:var(--unit-amarelo);font-size:28px;font-weight:800}
 .agenda li span{font-size:24px;font-weight:600;color:var(--unit-muted);font-variant-numeric:tabular-nums}
 .agenda li.demo{background:var(--unit-navy);color:#fff}.agenda li.demo::before{background:var(--unit-amarelo);color:var(--unit-navy)}.agenda li.demo span{color:#c9d3e8}
 .agenda{padding:0;margin:0}
+.total-tempo{font-size:26px;font-weight:700;color:var(--unit-azul);margin:28px 0 0}
 
 /* Escala 1 a 5 */
 .escala{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;margin-top:10px}
@@ -143,16 +148,16 @@ html,body{height:100%;background:#14254d}body{margin:0}
 .sinais div{background:var(--unit-cartao);border-radius:18px;padding:26px 24px;box-shadow:0 4px 18px #14254d14;display:flex;flex-direction:column;gap:16px}
 .sinais .ic{width:64px;height:64px;background:#f9dcdc;color:#a3242f}
 .sinais h2{font-size:30px;font-weight:800;line-height:1.2;margin:0;color:var(--unit-navy)}
-.sinais p{font-size:24px;line-height:1.4;margin:0;color:var(--unit-muted)}
+.sinais p{font-size:26px;line-height:1.4;margin:0;color:var(--unit-muted)}
 
 /* Verdadeiro ou golpe? */
 .mensagens{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;cursor:pointer}
 .msg{background:#dfe7f3;border-radius:22px;padding:22px 22px 24px;display:flex;flex-direction:column;gap:14px;position:relative}
 .msg-de{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:700;color:var(--unit-navy)}
 .msg-de i{width:40px;height:40px;border-radius:50%;background:#9fb1cf;flex:none}
-.msg-balao{background:#fff;border-radius:4px 18px 18px 18px;padding:18px 20px;font-size:25px;line-height:1.4;color:var(--unit-texto);box-shadow:0 2px 6px #14254d14}
+.msg-balao{background:#fff;border-radius:4px 18px 18px 18px;padding:20px 22px;font-size:28px;flex:1;line-height:1.4;color:var(--unit-texto);box-shadow:0 2px 6px #14254d14}
 .msg-balao u{color:var(--unit-azul);text-decoration-thickness:2px;overflow-wrap:anywhere}
-.msg-veredito{border-radius:14px;padding:14px 18px;font-size:22px;line-height:1.35;font-weight:500;background:var(--unit-cartao);color:var(--unit-muted);border:2px dashed #9fb1cf;text-align:center}
+.msg-veredito{border-radius:14px;padding:14px 18px;font-size:24px;line-height:1.35;font-weight:500;background:var(--unit-cartao);color:var(--unit-muted);border:2px dashed #9fb1cf;text-align:center}
 .msg-veredito b{display:block;font-size:26px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
 .msg .resposta{display:none}
 .msg.aberta .pergunta-msg{display:none}
@@ -170,16 +175,17 @@ html,body{height:100%;background:#14254d}body{margin:0}
 
 /* Equipe */
 .equipe{display:grid;grid-template-columns:2fr 1fr;gap:36px}
+.equipe .coluna{display:grid;gap:28px;align-content:start}.equipe .coluna .card{gap:12px}
 .nomes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 28px;margin:6px 0 0;padding:0;list-style:none}
-.nomes li{font-size:29px;font-weight:600;color:var(--unit-navy);padding:8px 0;border-bottom:2px solid var(--unit-fundo)}
+.nomes li{font-size:30px;font-weight:600;color:var(--unit-navy);padding:12px 0;border-bottom:2px solid var(--unit-fundo)}
 
 /* Foto */
 .com-foto{display:grid;grid-template-columns:760px 1fr;gap:48px;align-items:start}
 .com-foto img{width:100%;height:560px;object-fit:cover;border-radius:22px;display:block}
-.fatos{display:grid;gap:20px}
+.fatos{display:grid;gap:40px;align-content:center;height:560px}
 .fatos div{border-left:8px solid var(--unit-amarelo);padding-left:28px}
 .fatos span{display:block;font-size:20px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--unit-azul)}
-.fatos p{font-size:29px;line-height:1.4;margin:6px 0 0;color:var(--unit-texto);font-weight:500}
+.fatos p{font-size:34px;line-height:1.4;margin:6px 0 0;color:var(--unit-texto);font-weight:500}
 
 /* ODS */
 .ods{display:flex;gap:18px;margin-top:8px}
@@ -210,7 +216,10 @@ html,body{height:100%;background:#14254d}body{margin:0}
 /* Notas do apresentador */
 .notas-painel{position:fixed;left:0;right:0;bottom:0;z-index:10;background:#0b1733;color:#e6ecf8;border-top:3px solid #f2b632;padding:14px max(20px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));font-size:16px;line-height:1.55;max-height:34vh;overflow:auto}
 .notas-painel b{color:#f2b632;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:4px}
-@media (max-width:640px){.barra-telao .dica{display:none}.barra-telao{padding:0 10px}}
+@media (max-width:760px),(max-height:520px){:root{--barra:40px}.barra-telao .dica{display:none}.telao .barra-telao{justify-content:flex-end}.barra-telao .acoes{gap:6px}.barra-telao button{padding:4px 10px;font-size:12px}}
+@media (max-width:430px){.barra-telao .texto-btn{display:none}}
+.gire{display:none;position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));text-align:center;font-size:14px;line-height:1.4;color:#c9d3e8;pointer-events:none}
+@media (orientation:portrait) and (max-width:760px){.gire{display:block}}
 @media (prefers-reduced-motion:no-preference){.slide,.especial .conteudo{animation:entra .35s ease-out}@keyframes entra{from{opacity:.35;transform:translateY(10px)}to{opacity:1;transform:none}}}
 </style>
 
@@ -218,8 +227,8 @@ html,body{height:100%;background:#14254d}body{margin:0}
   <div class="barra-telao">
     <span class="dica" id="conexao-telao" role="status">← → navegar · N notas · F tela cheia</span>
     <div class="acoes">
-      <button id="anterior" type="button" aria-label="Slide anterior">‹ Anterior</button>
-      <button id="proximo" type="button" aria-label="Próximo slide">Próximo ›</button>
+      <button id="anterior" type="button" aria-label="Slide anterior">‹<span class="texto-btn"> Anterior</span></button>
+      <button id="proximo" type="button" aria-label="Próximo slide"><span class="texto-btn">Próximo </span>›</button>
       <button id="botao-notas" type="button" aria-pressed="false">Notas</button>
       <button id="tela-cheia" type="button">Tela cheia</button>
     </div>
@@ -234,6 +243,7 @@ html,body{height:100%;background:#14254d}body{margin:0}
       <div id="especial" class="especial" hidden></div>
     </article>
   </main>
+  <p class="gire">Gire o celular para ver os slides maiores.</p>
   <aside id="notas" class="notas-painel" hidden></aside>
 </div>
 
@@ -324,84 +334,80 @@ const aviso = (rotulo, texto, controle) => `<p class="slide-aviso${controle ? ' 
 
 const SECOES = ['Abertura', 'Informática básica', 'Ferramentas digitais', 'Internet consciente', 'Senhas seguras', 'Golpes virtuais', 'Dados pessoais', 'Wi-Fi aberto', 'Encerramento'];
 
-const divisoria = (s, aprender) => ({ s, k: 'secao', html: `<span class="faixa"></span><div class="conteudo"><p class="numero">${String(s).padStart(2, '0')}</p><p class="sobre">Parte ${s} de 7</p><h1>${SECOES[s]}</h1><ul class="aprender">${aprender.map((a) => `<li>${a}</li>`).join('')}</ul></div>`, n: 'Divisória de seção. Leia em voz alta o que a turma vai aprender nesta parte.' });
+const divisoria = (s, aprender, min) => ({ s, k: 'secao', html: `<span class="faixa"></span><div class="conteudo"><p class="numero">${String(s).padStart(2, '0')}</p><p class="sobre">Parte ${s} de 7</p><h1>${SECOES[s]}</h1><ul class="aprender">${aprender.map((a) => `<li>${a}</li>`).join('')}</ul></div>`, n: `Divisória de seção. Tempo sugerido para esta parte: ${min} min. Leia em voz alta o que a turma vai aprender.` });
 
 const SLIDES = [
-  { s: 0, k: 'capa', html: `<img class="logo" src="${LOGO}" alt="Unit · Universidade Tiradentes"><img class="globo" src="${GLOBO}" alt=""><div class="conteudo"><p class="sobre">Projeto de intervenção · Sistemas de Informação</p><h1>Inclusão Digital e Segurança da Informação</h1><p class="sub">Promovendo educação tecnológica e reduzindo desigualdades digitais</p></div><p class="pe"><b>EMEF Prof. Diomedes Santos Silva</b> · Turma da EJA · Orientação: Kramer da Silva Rodrigues · Aracaju/SE · 2026</p>`,
-    n: 'Boas-vindas. Agradeça à direção e à professora da turma. Diga que a palestra dura cerca de 1h30, tem uma demonstração ao vivo e termina com um questionário rápido.' },
-  { s: 0, t: 'Quem somos', html: `<div class="equipe"><div class="card"><span class="rotulo">Equipe · Sistemas de Informação · Unit</span><ul class="nomes"><li>Eduardo Aloiso</li><li>Matheus Crisostomo</li><li>Felipe Nobre</li><li>Joao Breno</li><li>Gabriel Torres</li><li>Pedro Fraifre</li><li>Bernado Goncalves</li><li>Cristhian Rafael</li><li>Valtson Silva</li></ul></div><div style="display:grid;gap:32px">${card('pessoa', 'Kramer da Silva Rodrigues', 'Professor orientador do projeto.', 'destaque')}${card('predio', 'Unit + EMEF', 'Parceria de extensão entre a universidade e a escola.', 'amarelo')}</div></div>`,
-    n: 'Cada integrante se apresenta rapidamente: nome e o que vai apresentar.' },
-  { s: 0, t: 'EMEF Prof. Diomedes Santos Silva', html: `<div class="com-foto"><img src="${MURAL}" alt="Fachada da escola com o mural do Prof. Diomedes Santos Silva"><div class="fatos"><div><span>Onde</span><p>Av. Alexandre Alcino, 950 · Santa Maria, Aracaju/SE</p></div><div><span>Com quem</span><p>Turma da EJA do turno noturno: jovens, adultos e idosos de 15 a 60 anos</p></div><div><span>Estrutura</span><p>Laboratório de informática, biblioteca, internet e projeto de robótica</p></div><div><span>Visita de diagnóstico</span><p>17/09/2026, com a coordenação da escola</p></div></div></div>`,
-    n: 'Fale da visita de diagnóstico: foi ali que a escola contou quais dificuldades a turma tem. Esta palestra foi montada a partir dessas respostas.' },
-  { s: 0, t: 'Por que este tema?', html: `<div class="cards">${card('celular', 'O celular é a porta de entrada', 'A maioria acessa a internet pelo celular, com pouco uso de computador.')}${card('alerta', 'Golpes por mensagem', 'Falso parente, falso Pix e links de promoção já chegaram até a turma.')}${card('predio', 'Serviços online', 'gov.br, banco e agendamentos ficam difíceis sem orientação.', 'destaque')}</div>${aviso('A tecnologia está em tudo', 'Mas nem todo mundo teve a chance de aprender a usá-la com segurança. Hoje é essa chance.')}`,
-    n: 'Estes três pontos vieram do formulário da visita. Pergunte: alguém aqui já recebeu uma mensagem estranha pedindo dinheiro? Deixe dois ou três relatos curtos.' },
-  { s: 0, t: 'Antes de começar: como você se sente?', html: `<p class="slide-lead">De 1 a 5, quanto você se sente seguro usando o celular e a internet?</p><div class="escala mt"><div><b>1</b><span>Nada seguro</span></div><div><b>2</b><span>Pouco seguro</span></div><div><b>3</b><span>Mais ou menos</span></div><div><b>4</b><span>Seguro</span></div><div><b>5</b><span>Muito seguro</span></div></div>${aviso('Guarde esse número', 'No final, vamos perguntar de novo para ver o que mudou.', true)}`,
-    n: 'Autoavaliação “antes”. Peça que marquem a nota na folha do questionário (ou levantem a mão em cada número). A meta do projeto é a nota média subir no final.' },
-  { s: 0, t: 'O que vamos ver hoje', html: `<ol class="agenda"><li>Informática básica <span>10 min</span></li><li>Ferramentas digitais <span>10 min</span></li><li>Internet consciente <span>10 min</span></li><li>Senhas seguras <span>15 min</span></li><li>Golpes virtuais <span>20 min</span></li><li>Dados pessoais e LGPD <span>10 min</span></li><li class="demo">Demonstração: Wi-Fi aberto <span>20 min</span></li><li>Resumo e questionário <span>15 min</span></li></ol>`,
-    n: 'Mostre o caminho da palestra. Avise que perguntas podem ser feitas a qualquer momento.' },
+  { s: 0, k: 'capa', html: `<img class="logo" src="${LOGO}" alt="Unit · Universidade Tiradentes"><img class="globo" src="${GLOBO}" alt=""><div class="conteudo"><p class="sobre">Projeto de intervenção · Sistemas de Informação</p><h1>Inclusão Digital e Segurança da Informação</h1><p class="sub">Promovendo educação tecnológica e reduzindo desigualdades digitais</p></div><p class="pe">Orientação: <b>Kramer da Silva Rodrigues</b> · Aracaju/SE · 2026</p>`,
+    n: 'Boas-vindas. Agradeça à direção e à professora da turma. A palestra dura 45 minutos, tem uma demonstração ao vivo e termina com um questionário rápido. Abertura: até 3 minutos, do slide 1 ao 6.' },
+  { s: 0, t: 'Quem somos', html: `<div class="equipe"><div class="card"><span class="rotulo">Equipe · Sistemas de Informação · Unit</span><ul class="nomes"><li>Eduardo Aloisio</li><li>Matheus Crisostomo</li><li>Felipe Nobre</li><li>João Breno</li><li>Gabriel Torres</li><li>Pedro Fraifre</li><li>Bernardo Gonçalves</li><li>Cristhian Rafael</li><li>Valtson Silva</li></ul></div><div class="coluna"><div class="card destaque">${ic('pessoa')}<span class="rotulo">Orientação</span><h2>Kramer da Silva Rodrigues</h2></div><div class="card amarelo">${ic('predio')}<span class="rotulo">Parceria</span><h2>Unit e EMEF Prof. Diomedes</h2></div></div></div>`,
+    n: 'Sem rodada de apresentações para caber no tempo: diga os nomes e que cada um vai falar uma parte.' },
+  { s: 0, t: 'EMEF Prof. Diomedes Santos Silva', html: `<div class="com-foto"><img src="${MURAL}" alt="Fachada da escola com o mural do Prof. Diomedes Santos Silva"><div class="fatos"><div><span>Onde</span><p>Bairro Santa Maria, Aracaju/SE</p></div><div><span>Com quem</span><p>Turma da EJA da noite, de 15 a 60 anos</p></div><div><span>Visita de diagnóstico</span><p>17 de setembro de 2026</p></div></div></div>`,
+    n: 'Na visita de diagnóstico, a escola contou as dificuldades da turma. Esta palestra foi montada a partir dessas respostas. A escola tem laboratório de informática, biblioteca e projeto de robótica.' },
+  { s: 0, t: 'Por que este tema?', html: `<div class="cards">${card('celular', 'O celular é a porta de entrada', 'Quase todo acesso à internet é pelo celular.')}${card('alerta', 'Golpes por mensagem', 'Falso parente, falso Pix e links de promoção.')}${card('predio', 'Serviços online', 'gov.br, banco e agendamentos.', 'destaque')}</div>`,
+    n: 'Estes três pontos vieram do formulário da visita. Pergunte: alguém já recebeu uma mensagem estranha pedindo dinheiro? Ouça um ou dois relatos curtos.' },
+  { s: 0, t: 'Como você se sente na internet?', html: `<p class="slide-lead">De 1 a 5, quanto você se sente seguro?</p><div class="escala mt"><div><b>1</b><span>Nada seguro</span></div><div><b>2</b><span>Pouco</span></div><div><b>3</b><span>Mais ou menos</span></div><div><b>4</b><span>Seguro</span></div><div><b>5</b><span>Muito seguro</span></div></div>${aviso('Guarde esse número', 'No final, vamos perguntar de novo.', true)}`,
+    n: 'Autoavaliação “antes”. Peça que marquem a nota na folha do questionário ou levantem a mão em cada número. A meta do projeto é a nota média subir no final.' },
+  { s: 0, t: 'O que vamos ver hoje', html: `<ol class="agenda"><li>Informática básica <span>4 min</span></li><li>Ferramentas digitais <span>4 min</span></li><li>Internet consciente <span>3 min</span></li><li>Senhas seguras <span>5 min</span></li><li>Golpes virtuais <span>9 min</span></li><li>Dados pessoais e LGPD <span>4 min</span></li><li class="demo">Demonstração: Wi-Fi aberto <span>8 min</span></li><li>Resumo e questionário <span>5 min</span></li></ol><p class="total-tempo">Total: 45 minutos, contando 3 minutos de abertura</p>`,
+    n: 'Mostre o caminho da palestra. Para caber em 45 minutos, guarde as perguntas longas para o final; dúvidas rápidas podem ser feitas a qualquer momento.' },
 
-  divisoria(1, ['A diferença entre aparelho, aplicativo e internet', 'Cuidados básicos com o celular', 'Onde ficam fotos e documentos']),
-  { s: 1, t: 'Aparelho, aplicativo e internet', html: `<div class="cards">${card('celular', 'Aparelho', 'O que você segura e toca: celular, computador, tablet.')}${card('apps', 'Aplicativo', 'Um programa para cada tarefa: WhatsApp, banco, câmera, mapa.')}${card('wifi', 'Internet', 'Liga os aparelhos do mundo todo. Chega pelo Wi-Fi ou pelos dados móveis do chip.', 'destaque')}</div>${aviso('Comparando', 'O aparelho é a casa, os aplicativos são os cômodos e a internet é a rua que leva até outras casas.')}`,
+  divisoria(1, ['Aparelho, aplicativo e internet', 'Cuidados com o celular'], 4),
+  { s: 1, t: 'Aparelho, aplicativo e internet', html: `<div class="cards">${card('celular', 'Aparelho', 'Celular, computador ou tablet.')}${card('apps', 'Aplicativo', 'Um programa para cada tarefa.')}${card('wifi', 'Internet', 'Chega pelo Wi-Fi ou pelos dados do chip.', 'destaque')}</div>${aviso('Para lembrar', 'O aparelho é a casa, os aplicativos são os cômodos e a internet é a rua.')}`,
     n: 'Use a comparação da casa. Pergunte quem usa Wi-Fi em casa e quem usa só os dados do chip.' },
-  { s: 1, t: 'Cuidados básicos com o celular', html: `<div class="cards" style="--c:4">${card('cadeado', 'Bloqueie a tela', 'Use senha, digital ou padrão. Celular perdido sem bloqueio é porta aberta.')}${card('atualizar', 'Atualize', 'As atualizações corrigem falhas de segurança. Aceite quando o celular pedir.')}${card('apps', 'Loja oficial', 'Instale aplicativos só pela Play Store ou App Store.')}${card('nuvem', 'Cópia de segurança', 'Ative o backup de fotos e contatos para não perder tudo.', 'destaque')}</div>`,
-    n: 'Se der tempo, mostre no próprio celular onde fica o bloqueio de tela (Configurações > Segurança). Diga que não precisam decorar o caminho: a equipe ajuda no final.' },
-  { s: 1, t: 'Onde ficam as coisas no celular', html: `<div class="cards">${card('pasta', 'Galeria e Fotos', 'Fotos e vídeos da câmera e os que chegam pelo WhatsApp.')}${card('documento', 'Documentos', 'Arquivos em PDF, como boletos, comprovantes e contratos.')}${card('pasta', 'Downloads', 'Tudo o que você baixa da internet vai para essa pasta.')}</div>${aviso('Antes de abrir um arquivo recebido', 'Pergunte a si mesmo: “eu estava esperando isso?”. Arquivo inesperado pode ser golpe.', true)}`,
-    n: 'Ligue com segurança: arquivos .apk ou PDFs inesperados podem instalar programas que roubam dados.' },
+  { s: 1, t: 'Cuidados básicos com o celular', html: `<div class="cards" style="--c:4">${card('cadeado', 'Bloqueie a tela', 'Senha, digital ou padrão.')}${card('atualizar', 'Atualize', 'Atualizações corrigem falhas.')}${card('apps', 'Loja oficial', 'Só Play Store ou App Store.')}${card('nuvem', 'Faça backup', 'Fotos e contatos guardados na nuvem.', 'destaque')}</div>`,
+    n: 'Se der tempo, mostre no próprio celular onde fica o bloqueio de tela (Configurações > Segurança). Não precisam decorar o caminho: a equipe ajuda no final.' },
+  
+  divisoria(2, ['E-mail e WhatsApp', 'A conta gov.br'], 4),
+  { s: 2, t: 'Três ferramentas do dia a dia', html: `<div class="cards">${card('email', 'E-mail', 'Para cadastros e para recuperar senhas.')}${card('conversa', 'WhatsApp', 'Cuidado com links de desconhecidos.')}${card('predio', 'gov.br', 'Uma conta para INSS, CNH e Carteira de Trabalho.', 'destaque')}</div>`,
+    n: 'Pergunte quem tem e-mail e se lembra da senha. O e-mail é a chave para recuperar outras contas. No WhatsApp dá para mandar áudio, foto e documento.' },
+  { s: 2, t: 'Conta gov.br', html: `<div class="cards">${card('', 'Bronze', 'Cadastro básico com CPF.')}${card('', 'Prata', 'Validada pelo banco ou pelo rosto.')}${card('', 'Ouro', 'Nível mais alto, com mais serviços.', 'destaque')}</div>${aviso('O governo não pede senha por mensagem', 'Use só o site gov.br ou o aplicativo oficial.')}`,
+    n: 'As regras de cada nível podem mudar; o importante é: quanto mais alto o nível, mais serviços abrem. A senha do gov.br é tão importante quanto a do banco.' },
 
-  divisoria(2, ['Para que serve o e-mail', 'Aplicativos de mensagem com cuidado', 'A conta gov.br e os serviços públicos']),
-  { s: 2, t: 'Três ferramentas do dia a dia', html: `<div class="cards">${card('email', 'E-mail', 'Um endereço como nome@provedor.com. Serve para cadastros, documentos e recuperar senhas.')}${card('conversa', 'Mensagens', 'No WhatsApp você manda áudio, foto e documento. Cuidado com links de grupos e de desconhecidos.')}${card('predio', 'gov.br', 'Uma única conta para Meu INSS, Carteira de Trabalho Digital, CNH Digital e outros serviços.', 'destaque')}</div>`,
-    n: 'Pergunte quem tem e-mail e se lembra da senha. Muita gente cria e esquece: o e-mail é a chave para recuperar outras contas.' },
-  { s: 2, t: 'Conta gov.br: a chave dos serviços públicos', html: `<div class="cards">${card('', 'Bronze', 'Cadastro básico com CPF. Já abre alguns serviços.', '')}${card('', 'Prata', 'Conta validada por banco credenciado ou reconhecimento facial. Libera mais serviços.', '')}${card('', 'Ouro', 'O nível mais alto. Validação por biometria ou certificado digital.', 'destaque')}</div>${aviso('Use só o site gov.br ou o aplicativo oficial', 'Ninguém do governo pede sua senha por mensagem ou telefone. Quem pede é golpista.')}`,
-    n: 'Os níveis podem mudar com o tempo; o importante é: quanto mais alto o nível, mais serviços abrem. Reforce que a senha do gov.br é tão importante quanto a do banco.' },
+  divisoria(3, ['Como checar uma notícia antes de repassar'], 3),
+  { s: 3, t: 'Antes de compartilhar, confira', html: `<div class="cards" style="--c:4">${card('relogio', '1. Pare', 'Pressa e medo pedem calma.')}${card('lupa', '2. Veja quem publicou', 'É um site conhecido?')}${card('documento', '3. Confira a data', 'E veja se outros sites falam disso.')}${card('x', '4. Na dúvida, não repasse', 'Notícia falsa se espalha rápido.', 'destaque')}</div>`,
+    n: 'A escola relatou notícias falsas em grupos. Exemplo: “o banco vai fechar contas amanhã”, mandado com pressa. Ninguém precisa decidir na hora.' },
+  
+  divisoria(4, ['Senha forte e fácil de lembrar', 'Verificação em duas etapas'], 5),
+  { s: 4, t: 'Como criar uma senha forte', html: `<div class="lados"><div class="lado evite"><h2>${mini('x')}Evite</h2><ul><li>123456 ou “senha”</li><li>Data de nascimento</li><li>A mesma senha em tudo</li></ul></div><div class="lado prefira"><h2>${mini('check')}Prefira</h2><ul><li>Uma frase longa, só sua</li><li>Uma senha para cada conta</li><li>Exemplo (não use este):<br><span class="exemplo-senha">Cafe-com-Cuscuz-na-Feira-26</span></li></ul></div></div>`,
+    n: 'Frase-senha é mais fácil de lembrar e mais difícil de adivinhar. Peça que cada um pense numa frase só dele, sem falar em voz alta. Não anote a senha na capinha do celular.' },
+  { s: 4, t: 'Verificação em duas etapas', html: `<div class="cards">${card('escudo', 'O que é', 'Senha + um PIN extra.')}${card('conversa', 'No WhatsApp', 'Configurações › Conta › Confirmação em duas etapas')}${card('chave', 'Código é segredo', 'Nunca passe o código que chega por SMS.', 'destaque')}</div>${aviso('A equipe ajuda a ativar', 'Depois da palestra, no seu celular.', true)}`,
+    n: 'Mesmo que roubem a senha, o golpista não entra sem o PIN. Golpe comum: “sou do WhatsApp, vou mandar um código, me fala”. Com o código, o golpista pega a conta e pede dinheiro aos contatos.' },
 
-  divisoria(3, ['Como checar uma notícia antes de compartilhar', 'Respeito e responsabilidade na internet']),
-  { s: 3, t: 'Antes de compartilhar, confira', html: `<div class="cards" style="--c:4">${card('relogio', '1. Pare', 'Notícia que dá medo, raiva ou pressa pede calma.')}${card('lupa', '2. Veja a fonte', 'Quem publicou? É um site ou jornal conhecido?')}${card('documento', '3. Confira data e outros sites', 'Notícia antiga volta como nova. Procure se outros sites também dão.')}${card('x', '4. Na dúvida, não repasse', 'Encaminhar notícia falsa espalha o problema.', 'destaque')}</div>`,
-    n: 'Conte que a escola relatou notícias falsas em grupos. Um exemplo: “o banco vai fechar contas amanhã” mandado com pressa. Ninguém precisa decidir na hora.' },
-  { s: 3, t: 'Respeito também vale na internet', html: `<div class="cards">${card('pessoas', 'Peça permissão', 'Não compartilhe foto ou vídeo de outra pessoa sem ela concordar.')}${card('olho', 'O que vai para a internet fica', 'Uma foto ou um áudio pode circular por anos, mesmo depois de apagado.')}${card('balanca', 'Existem leis', 'O Marco Civil da Internet garante direitos e deveres. Ofensa online também é crime.', 'destaque')}</div>`,
-    n: 'Marco Civil da Internet: Lei 12.965/2014. Fale de forma simples: a internet não é terra sem lei.' },
-
-  divisoria(4, ['Como criar uma senha forte e fácil de lembrar', 'Verificação em duas etapas', 'Por que nunca passar códigos']),
-  { s: 4, t: 'Como criar uma senha forte', html: `<div class="lados"><div class="lado evite"><h2>${mini('x')}Evite</h2><ul><li>123456, 000000 ou “senha”</li><li>Data de nascimento ou nome do filho</li><li>A mesma senha em todas as contas</li><li>Senha anotada na capinha do celular</li></ul></div><div class="lado prefira"><h2>${mini('check')}Prefira</h2><ul><li>Uma frase longa que só você conhece</li><li>Misture palavras, números e símbolos</li><li>Uma senha diferente para banco, e-mail e WhatsApp</li><li>Exemplo (não use este):<br><span class="exemplo-senha">Cafe-com-Cuscuz-na-Feira-26</span></li></ul></div></div>`,
-    n: 'Frase-senha é mais fácil de lembrar e mais difícil de adivinhar. Peça que cada um pense numa frase só dele, sem falar em voz alta.' },
-  { s: 4, t: 'Verificação em duas etapas', html: `<div class="cards">${card('escudo', 'O que é', 'Além da senha, o aplicativo pede um código ou PIN. Mesmo que roubem a senha, não entram.')}${card('conversa', 'No WhatsApp', 'Configurações › Conta › Confirmação em duas etapas. Crie um PIN de 6 números.')}${card('chave', 'Código é segredo', 'Ninguém de verdade pede o código que chega por SMS. Quem pede quer roubar sua conta.', 'destaque')}</div>${aviso('Ative hoje', 'A equipe pode ajudar a ativar no seu celular depois da palestra.', true)}`,
-    n: 'Golpe comum: “sou do WhatsApp, vou mandar um código, me fala”. Com o código, o golpista pega a conta e pede dinheiro aos contatos.' },
-
-  divisoria(5, ['Os golpes que mais aparecem', 'Dinâmica: verdadeiro ou golpe?', 'O que fazer se cair em um golpe']),
-  { s: 5, t: 'Os golpes mais comuns', html: `<div class="cards compactos" style="--c:2">${card('pessoa', 'Falso parente', '“Oi mãe, troquei de número.” Logo depois vem o pedido de Pix urgente.')}${card('dinheiro', 'Falso Pix', 'Comprovante falso de pagamento, ou pedido para “devolver” um Pix enviado por engano.')}${card('presente', 'Promoção boa demais', 'Prêmio, emprego ou desconto que pede só um clique, o frete ou seus dados.')}${card('telefone', 'Falsa central do banco', 'Ligação dizendo que sua conta foi invadida e pedindo senha, código ou transferência.', 'destaque')}</div>`,
-    n: 'Estes quatro foram citados pela escola. Peça relatos. Lembre: banco nunca liga pedindo senha nem transferência para “conta segura”.' },
+  divisoria(5, ['Os golpes mais comuns', 'Dinâmica: verdadeiro ou golpe?', 'O que fazer se cair em golpe'], 9),
+  { s: 5, t: 'Os golpes mais comuns', html: `<div class="cards compactos" style="--c:2">${card('pessoa', 'Falso parente', '“Troquei de número” e logo pede Pix.')}${card('dinheiro', 'Falso Pix', 'Comprovante falso ou “devolve o Pix errado”.')}${card('presente', 'Prêmio fácil', 'Pede um clique, o frete ou seus dados.')}${card('telefone', 'Falsa central do banco', 'Liga pedindo senha ou transferência.', 'destaque')}</div>`,
+    n: 'Estes quatro foram citados pela escola. Peça relatos. Banco nunca liga pedindo senha nem transferência para “conta segura”.' },
   { s: 5, t: 'Verdadeiro ou golpe?', quiz: true, html: `<div class="mensagens interativo" id="quiz">
-    <article class="msg golpe"><div class="msg-de"><i></i>Número desconhecido</div><div class="msg-balao">Oi mãe, troquei de número, salva esse. Preciso pagar um boleto urgente, consegue me fazer um Pix agora?</div><div class="msg-veredito"><span class="pergunta-msg">Toque para revelar</span><span class="resposta"><b>Golpe</b>Número novo + pressa + dinheiro. Ligue para o número antigo.</span></div></article>
-    <article class="msg golpe"><div class="msg-de"><i></i>SMS · SeuBanco</div><div class="msg-balao">Compra de R$ 1.890,00 aprovada. Não reconhece? Cancele em <u>seubanc0-seguro.top/cancelar</u></div><div class="msg-veredito"><span class="pergunta-msg">Toque para revelar</span><span class="resposta"><b>Golpe</b>Link estranho e susto. Abra o app do banco por conta própria.</span></div></article>
-    <article class="msg golpe"><div class="msg-de"><i></i>Grupo da família</div><div class="msg-balao">PARABÉNS! Você ganhou uma airfryer. Pague só o frete de R$ 9,90 em <u>promo-premio.xyz</u></div><div class="msg-veredito"><span class="pergunta-msg">Toque para revelar</span><span class="resposta"><b>Golpe</b>Prêmio que você não pediu e link desconhecido.</span></div></article>
-    <article class="msg segura"><div class="msg-de"><i></i>Coordenação da escola</div><div class="msg-balao">Lembrete: a reunião com a turma da EJA será quinta, às 19h, na própria escola. Não precisa responder.</div><div class="msg-veredito"><span class="pergunta-msg">Toque para revelar</span><span class="resposta"><b>Parece segura</b>Sem link, sem dinheiro, sem pressa. Na dúvida, confirme na escola.</span></div></article>
-  </div><p class="dica-quiz">Mensagens fictícias. A turma vota em cada uma; toque no cartão ou aperte <kbd>R</kbd> para revelar.</p>`,
-    n: 'Dinâmica: leia cada mensagem em voz alta e peça que a turma levante a mão para “golpe” ou “verdadeira”. Depois revele uma por vez e pergunte qual sinal entregou o golpe.' },
-  { s: 5, t: 'Sinais de alerta', html: `<div class="sinais"><div>${ic('relogio')}<h2>Pressa</h2><p>“É urgente”, “só hoje”, “vão bloquear sua conta”.</p></div><div>${ic('dinheiro')}<h2>Dinheiro ou código</h2><p>Pedido de Pix, senha ou código recebido por SMS.</p></div><div>${ic('link')}<h2>Link estranho</h2><p>Endereço com erros, números no lugar de letras ou final esquisito.</p></div><div>${ic('presente')}<h2>Bom demais</h2><p>Prêmio sem sorteio, emprego fácil, desconto enorme.</p></div><div>${ic('pessoa')}<h2>Conhecido com número novo</h2><p>Parente ou amigo que “trocou de número”.</p></div></div>${aviso('Viu um sinal? Pare, desligue e confirme por outro caminho', 'Ligue para a pessoa no número antigo ou abra o aplicativo do banco por conta própria.')}`,
+    <article class="msg golpe"><div class="msg-de"><i></i>Número desconhecido</div><div class="msg-balao">Oi mãe, troquei de número. Me faz um Pix urgente?</div><div class="msg-veredito"><span class="pergunta-msg">Toque para revelar</span><span class="resposta"><b>Golpe</b>Número novo e pedido de dinheiro.</span></div></article>
+    <article class="msg golpe"><div class="msg-de"><i></i>SMS · SeuBanco</div><div class="msg-balao">Compra de R$ 1.890 aprovada. Não foi você? Cancele em <u>seubanc0-seguro.top</u></div><div class="msg-veredito"><span class="pergunta-msg">Toque para revelar</span><span class="resposta"><b>Golpe</b>Susto e link estranho.</span></div></article>
+    <article class="msg golpe"><div class="msg-de"><i></i>Grupo da família</div><div class="msg-balao">PARABÉNS! Você ganhou uma airfryer. Pague só o frete em <u>promo-premio.xyz</u></div><div class="msg-veredito"><span class="pergunta-msg">Toque para revelar</span><span class="resposta"><b>Golpe</b>Prêmio que você não pediu.</span></div></article>
+    <article class="msg segura"><div class="msg-de"><i></i>Coordenação da escola</div><div class="msg-balao">Reunião da turma da EJA na quinta, às 19h, na escola.</div><div class="msg-veredito"><span class="pergunta-msg">Toque para revelar</span><span class="resposta"><b>Parece segura</b>Sem link e sem pedido.</span></div></article>
+  </div><p class="dica-quiz">Mensagens fictícias. Toque no cartão ou aperte <kbd>R</kbd> para revelar.</p>`,
+    n: 'Dinâmica: leia cada mensagem em voz alta e peça que a turma levante a mão para “golpe” ou “verdadeira”. Revele uma por vez e pergunte qual sinal entregou o golpe. Na mensagem da escola, lembre: na dúvida, confirme pessoalmente.' },
+  { s: 5, t: 'Sinais de alerta', html: `<div class="sinais"><div>${ic('relogio')}<h2>Pressa</h2><p>“É urgente”, “só hoje”.</p></div><div>${ic('dinheiro')}<h2>Dinheiro ou código</h2><p>Pix, senha ou código do SMS.</p></div><div>${ic('link')}<h2>Link estranho</h2><p>Endereço com erros ou números.</p></div><div>${ic('presente')}<h2>Bom demais</h2><p>Prêmio sem sorteio.</p></div><div>${ic('pessoa')}<h2>Número novo</h2><p>Conhecido que “trocou de número”.</p></div></div>${aviso('Desconfiou? Pare e confirme por outro caminho', 'Ligue para o número antigo ou abra o app do banco.')}`,
     n: 'Repita a regra de ouro: desconfiou, pare. Golpista conta com a pressa.' },
-  { s: 5, t: 'Caí em um golpe. E agora?', html: `<div class="cards" style="--c:4">${card('telefone', 'Avise o banco já', 'Ligue no número do cartão ou do app. Se foi Pix, peça o MED, o mecanismo de devolução.')}${card('chave', 'Troque as senhas', 'Mude as senhas e ative a verificação em duas etapas.')}${card('pessoas', 'Avise os contatos', 'Conte que sua conta pode estar sendo usada por outra pessoa.')}${card('documento', 'Registre a ocorrência', 'Faça o boletim de ocorrência e guarde prints e comprovantes.', 'destaque')}</div>${aviso('Não tenha vergonha', 'Golpista engana qualquer pessoa. Quanto mais rápido você avisar, maior a chance de recuperar o dinheiro.', true)}`,
-    n: 'MED: Mecanismo Especial de Devolução do Pix, pedido ao próprio banco. Quanto antes, melhor. Reforce que não há culpa em cair em golpe.' },
+  { s: 5, t: 'Caí em um golpe. E agora?', html: `<div class="cards" style="--c:4">${card('telefone', 'Ligue para o banco', 'Pelo número do cartão. Se foi Pix, peça o MED.')}${card('chave', 'Troque as senhas', 'E ative as duas etapas.')}${card('pessoas', 'Avise os contatos', 'Sua conta pode estar com outra pessoa.')}${card('documento', 'Registre a ocorrência', 'Faça o boletim e guarde os prints.', 'destaque')}</div>${aviso('Não tenha vergonha', 'Avisar rápido aumenta a chance de recuperar o dinheiro.', true)}`,
+    n: 'MED é o Mecanismo Especial de Devolução do Pix, pedido ao próprio banco. Quanto antes, melhor. Golpista engana qualquer pessoa: não há culpa em cair em golpe.' },
 
-  divisoria(6, ['O que são dados pessoais e dados sensíveis', 'O que a LGPD garante a você']),
-  { s: 6, t: 'O que são dados pessoais?', html: `<div class="grupos"><div class="card"><span class="rotulo">Dados pessoais</span><h2>Tudo o que identifica você</h2><div class="etiquetas"><span>Nome</span><span>CPF</span><span>RG</span><span>Endereço</span><span>Telefone</span><span>Foto</span><span>Localização</span><span>E-mail</span></div></div><div class="card destaque"><span class="rotulo">Dados sensíveis · proteção maior</span><h2>Podem causar discriminação</h2><div class="etiquetas"><span>Saúde</span><span>Religião</span><span>Origem racial</span><span>Biometria</span><span>Opinião política</span></div></div></div>${aviso('Pense antes de informar o CPF', 'Para ganhar um desconto na farmácia, por exemplo, pergunte para que ele vai ser usado.')}`,
-    n: 'Biometria é a digital e o rosto. Dados sensíveis têm regras mais rígidas na LGPD.' },
-  { s: 6, t: 'A LGPD protege você', html: `<p class="slide-lead">A Lei Geral de Proteção de Dados (Lei 13.709/2018) diz que empresas e governo precisam cuidar dos seus dados. Você tem direito de:</p><div class="cards compactos mt" style="--c:4">${card('olho', 'Saber', 'Quais dados seus uma empresa guarda e com quem compartilha.')}${card('documento', 'Corrigir', 'Pedir a correção de dados errados ou desatualizados.')}${card('x', 'Pedir exclusão', 'Pedir que apaguem dados que não são mais necessários.')}${card('check', 'Mudar de ideia', 'Retirar uma autorização que você tinha dado.', 'destaque')}</div>`,
-    n: 'Quem fiscaliza é a ANPD (Autoridade Nacional de Proteção de Dados). Não é preciso decorar o número da lei: o importante é saber que esses direitos existem.' },
+  divisoria(6, ['O que são dados pessoais', 'O que a LGPD garante'], 4),
+  { s: 6, t: 'O que são dados pessoais?', html: `<div class="grupos"><div class="card"><span class="rotulo">Dados pessoais</span><h2>Identificam você</h2><div class="etiquetas"><span>Nome</span><span>CPF</span><span>Endereço</span><span>Telefone</span><span>Foto</span><span>Localização</span></div></div><div class="card destaque"><span class="rotulo">Dados sensíveis</span><h2>Têm proteção maior</h2><div class="etiquetas"><span>Saúde</span><span>Religião</span><span>Origem racial</span><span>Biometria</span></div></div></div>${aviso('Pense antes de dar o CPF', 'Pergunte para que ele será usado.')}`,
+    n: 'Biometria é a digital e o rosto. Opinião política também é dado sensível. Exemplo do CPF: o desconto da farmácia em troca do cadastro.' },
+  { s: 6, t: 'A LGPD protege você', html: `<p class="slide-lead">A Lei Geral de Proteção de Dados garante que você pode:</p><div class="cards compactos mt" style="--c:4">${card('olho', 'Saber', 'Quais dados seus uma empresa tem.')}${card('documento', 'Corrigir', 'Dados errados ou antigos.')}${card('x', 'Pedir exclusão', 'Do que não for mais necessário.')}${card('check', 'Mudar de ideia', 'Retirar uma autorização.', 'destaque')}</div>`,
+    n: 'LGPD é a Lei 13.709/2018. Quem fiscaliza é a ANPD (Autoridade Nacional de Proteção de Dados). Não precisa decorar o número da lei: o importante é saber que esses direitos existem.' },
 
-  divisoria(7, ['Uma rede Wi-Fi aberta de teste, ao vivo', 'O que a rede consegue ver', 'HTTP sem cadeado × HTTPS com cadeado'])
+  divisoria(7, ['Uma rede Wi-Fi aberta de teste', 'HTTP sem cadeado × HTTPS com cadeado'], 8)
 ];
 
 ETAPAS.forEach((e) => SLIDES.push({ s: 7, t: e.titulo, html: e.corpo, n: e.nota, demo: true }));
 
 SLIDES.push(
-  { s: 8, t: 'Seis regras para levar para casa', html: `<div class="cards compactos">${card('cadeado', 'Confira o cadeado', 'Senha e banco só em site com HTTPS e em rede de confiança.')}${card('chave', 'Senha forte + duas etapas', 'Uma frase longa e um PIN extra em cada conta importante.')}${card('relogio', 'Pressa é sinal de golpe', 'Pare, desligue e confirme por outro caminho.')}${card('escudo', 'Código é segredo', 'Nunca repasse o código que chega por SMS.')}${card('lupa', 'Confira antes de repassar', 'Fonte, data e outros sites.')}${card('pessoa', 'Seus dados valem muito', 'Informe CPF e documentos só quando for necessário.', 'destaque')}</div>`,
+  { s: 8, t: 'Seis regras para levar para casa', html: `<div class="cards compactos">${card('cadeado', 'Confira o cadeado', 'Senha e banco só com HTTPS.')}${card('chave', 'Senha forte + duas etapas', 'Em toda conta importante.')}${card('relogio', 'Pressa é sinal de golpe', 'Pare e confirme.')}${card('escudo', 'Código é segredo', 'Nunca repasse o código do SMS.')}${card('lupa', 'Confira antes de repassar', 'Fonte, data e outros sites.')}${card('pessoa', 'Cuide dos seus dados', 'CPF só quando for preciso.', 'destaque')}</div>`,
     n: 'Resumo da palestra. Leia cada regra e peça que a turma repita a palavra-chave: cadeado, senha, pressa, código, confira, dados.' },
-  { s: 8, t: 'Hora do questionário', html: `<div class="cards" style="--c:2">${card('documento', 'Responda com calma', 'Não é prova e não vale nota. Tem mensagens reais e falsas para você identificar. As respostas ajudam a melhorar o projeto.')}${card('check', 'Como você se sente agora?', 'Marque de novo, de 1 a 5, quanto você se sente seguro usando o celular e a internet.', 'destaque')}</div>${aviso('Precisa de ajuda para ler?', 'Levante a mão: alguém da equipe vai até você.', true)}`,
-    n: 'Distribua o questionário e as canetas. Metas do projeto: 70% ou mais de acertos, 70% ou mais identificando os golpes e aumento da nota média da autoavaliação. Ajude quem tem dificuldade de leitura sem sugerir respostas.' },
-  { s: 8, t: 'O projeto continua', html: `<div class="cards">${card('documento', 'Material fica com a escola', 'Os slides e a cartilha de segurança ficam disponíveis para os professores.')}${card('computador', 'Prática no laboratório', 'O laboratório de informática pode receber novas atividades práticas.')}${card('pessoas', 'Conte para três pessoas', 'Leve as dicas para a família e os amigos. Esse é o efeito multiplicador.', 'destaque')}</div><div class="ods mt"><span><b>4</b>Educação de qualidade</span><span><b>9</b>Indústria, inovação e infraestrutura</span><span><b>10</b>Redução das desigualdades</span></div>`,
-    n: 'O projeto se liga aos ODS 4, 9 e 10 da ONU. Combine com a escola a entrega da cartilha e dos slides.' },
-  { s: 8, t: 'Referências', html: `<ul class="refs"><li>BRASIL. Lei nº 12.965, de 23 de abril de 2014. Marco Civil da Internet. Brasília, DF: Presidência da República, 2014.</li><li>BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD). Brasília, DF: Presidência da República, 2018.</li><li>CERT.br. Cartilha de Segurança para Internet. São Paulo: NIC.br. Disponível em: cartilha.cert.br.</li><li>CGI.br. Pesquisa TIC Domicílios 2025. São Paulo: CGI.br, 2026.</li><li>NAÇÕES UNIDAS BRASIL. Objetivos de Desenvolvimento Sustentável. Disponível em: brasil.un.org/pt-br/sdgs.</li><li>STALLINGS, William; BROWN, Lawrie. Segurança de computadores: princípios e práticas.</li></ul>`,
+  { s: 8, t: 'Hora do questionário', html: `<div class="cards" style="--c:2">${card('documento', 'Responda com calma', 'Não é prova e não vale nota.')}${card('check', 'Como você se sente agora?', 'Marque de novo, de 1 a 5.', 'destaque')}</div>${aviso('Precisa de ajuda para ler?', 'Levante a mão: alguém da equipe vai até você.', true)}`,
+    n: 'Reserve 5 minutos. Distribua o questionário e as canetas. Metas do projeto: 70% ou mais de acertos, 70% ou mais identificando os golpes e aumento da nota média da autoavaliação. Ajude quem tem dificuldade de leitura sem sugerir respostas.' },
+  { s: 8, t: 'O projeto continua', html: `<div class="cards">${card('documento', 'Material na escola', 'Slides e cartilha para os professores.')}${card('computador', 'Prática no laboratório', 'Novas atividades no computador.')}${card('pessoas', 'Conte para três pessoas', 'Leve as dicas para casa.', 'destaque')}</div><div class="ods mt"><span><b>4</b>Educação de qualidade</span><span><b>9</b>Inovação e infraestrutura</span><span><b>10</b>Redução das desigualdades</span></div>`,
+    n: 'O projeto se liga aos ODS 4, 9 e 10 da ONU. Efeito multiplicador: cada participante leva as dicas para a família. Combine com a escola a entrega da cartilha e dos slides.' },
+  { s: 8, t: 'Referências', html: `<ul class="refs"><li>BRASIL. Lei nº 12.965, de 23 de abril de 2014. Marco Civil da Internet.</li><li>BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD).</li><li>CERT.br. Cartilha de Segurança para Internet. São Paulo: NIC.br.</li><li>CGI.br. Pesquisa TIC Domicílios 2025. São Paulo: CGI.br, 2026.</li><li>NAÇÕES UNIDAS BRASIL. Objetivos de Desenvolvimento Sustentável.</li><li>STALLINGS, William; BROWN, Lawrie. Segurança de computadores: princípios e práticas.</li></ul>`,
     n: 'Slide de apoio. Pode ser pulado na palestra para a turma.' },
-  { s: 8, k: 'capa', html: `<img class="logo" src="${LOGO}" alt="Unit · Universidade Tiradentes"><img class="globo" src="${GLOBO}" alt=""><div class="conteudo"><p class="sobre">Inclusão Digital e Segurança da Informação</p><h1>Obrigado!</h1><p class="sub">Perguntas e sugestões são bem-vindas. A equipe fica para ajudar a configurar o seu celular.</p></div><p class="pe"><b>EMEF Prof. Diomedes Santos Silva</b> · Sistemas de Informação · Unit · 2026</p>`,
+  { s: 8, k: 'capa', html: `<img class="logo" src="${LOGO}" alt="Unit · Universidade Tiradentes"><img class="globo" src="${GLOBO}" alt=""><div class="conteudo"><p class="sobre">Inclusão Digital e Segurança da Informação</p><h1>Obrigado!</h1><p class="sub">Perguntas? A equipe fica para ajudar com o seu celular.</p></div><p class="pe"><b>EMEF Prof. Diomedes Santos Silva</b> · Unit · 2026</p>`,
     n: 'Abra para perguntas. Ofereça ajuda para ativar o bloqueio de tela e a confirmação em duas etapas do WhatsApp. Lembre de encerrar a rede de teste.' }
 );
 
